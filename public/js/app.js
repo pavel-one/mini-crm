@@ -1,0 +1,411 @@
+;(function (window, document, $, undefined) {
+    if (!$) {
+        return undefined;
+    }
+    let loaderUrl = '/preloader.svg';
+    $.fn.extend({
+        loader: function (enable) {
+            if (enable) {
+                $(this).css('position', 'relative');
+                $(this).append(
+                    '<div id="form_loader" style="position: absolute;z-index: 999;display: flex;flex-direction: column;justify-content: center;text-align: center;width: 100%;height: 100%;background: rgba(0,0,0,.15);left: 0;top: 0;">' +
+                    '<img src="' + loaderUrl + '" alt="">' +
+                    '</div>'
+                );
+            } else {
+                $('#form_loader').remove();
+                $(this).css('position', 'auto');
+            }
+        },
+        reloadObj: function () {
+            let className = '';
+            this[0].classList.forEach((item) => {
+                className += '.' + item;
+            });
+            $(className).loader(true);
+            $.ajax({
+                url: window.location.href,
+                dataType: 'html',
+                success: function (resp) {
+                    $(document).find(className).html($(resp).find(className).html());
+                    $(className).loader(false);
+                }
+            });
+        }
+    });
+}(window, document, window.jQuery));
+
+function Crm() {
+    $(document).on('mouseover', '.table tr', function () {
+        let table = $(this).closest('.table');
+        $('.table tr').removeClass('active');
+        $(this).addClass('active');
+    });
+    $(document).on('mouseout', '.table tr', function () {
+        $('.table tr').removeClass('active');
+    });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    let clientContainer = '.client-editable';
+    let updateContainer = '.update-container';
+    let self = this;
+
+    $(document).on('click', '.cart-create', _cartCreateClick);
+
+    $(document).on('mouseover', '[data-name]', _appendEditButton);
+    $(document).on('mouseout', '[data-name]', _removeEditButton);
+    $(document).on('click', '[data-name]', _clickEditElement);
+
+    $(document).on('click', '.createAccess', _appendAccessForm);
+    $(document).on('keyup', '.createAccessForm input', _createAccess);
+
+    $(document).on('click', '.createTask', _createTask);
+    $(document).on('click', '.task-actions div.icon', _taskHandler);
+
+    $(document).on('click', '.createPayment', _createPayment);
+
+    $(document).on('change', '.upload-form input', _uploadFile);
+
+    function _cartCreateClick() {
+        $('#create-crm').modal('show');
+    }
+
+    function _appendEditButton() {
+        $(this).append('<span class="editIcon"><i class="fas fa-pencil-alt"></i></span>');
+    }
+
+    function _removeEditButton() {
+        $('.editIcon').remove();
+    }
+
+
+    function _clickEditElement() {
+        let val = $(this).text().replace(/\s{2,}/g, '');
+        let $parent = $(this).parent();
+        let oldHtml = $parent.html();
+        let name = $(this).data('name');
+        let id = false;
+
+        let $clientContainer = $(clientContainer);
+        let action = $clientContainer.data('action');
+
+        if ($(this).hasClass('accessClass')) {
+            action = $clientContainer.data('access-action');
+            id = $(this).data('id');
+        }
+
+        //accessClass
+
+        $parent.html(
+            '<div class="inputFormSave"> ' +
+                '<input class="table-input" name="'+name+'" value="'+val+'" />' +
+                '<span class="saveButton"><i class="fas fa-check"></i></span>' +
+            '</div>'
+        );
+
+        let $inputFormSave = $('.inputFormSave input');
+        $inputFormSave.focus();
+        $inputFormSave.keyup(function (e) {
+            if (e.originalEvent.keyCode == 13) {
+                $(this).parent().find('.saveButton').click();
+            } 
+        });
+
+        $parent.find('.saveButton').click(function () {
+            val = $(this).parent().find('input').val();
+            let data = {};
+            data[name] = val;
+            if (id) {
+                data['id'] = id;
+                data['value'] = val;
+                data['name'] = name;
+            }
+
+            updateClient(action, data);
+        });
+
+        return false;
+    }
+
+    function updateClient($action, $data) {
+        $.ajax({
+            url: $action,
+            data: $data,
+            method: 'POST',
+            success: function (resp) {
+                console.log(resp);
+                $(updateContainer).reloadObj();
+                self.msg(resp);
+            }
+        })
+    }
+
+    function _appendAccessForm() {
+        let $container = $(this).closest('.table-responsive').find('.table tbody');
+        $container.append(
+            '<tr class="createAccessForm">\n' +
+            '    <td>\n' +
+            '        <input name="name" class="table-input" type="text" placeholder="Название">\n' +
+            '    </td>\n' +
+            '    <td>\n' +
+            '        <input name="value" class="table-input" type="text" placeholder="Значение">\n' +
+            '    </td>\n' +
+            '</tr>'
+        );
+    }
+
+    function _createAccess(e) {
+        if (e.originalEvent.keyCode !== 13) {
+            return false;
+        }
+        let action = $(clientContainer).data('access-action');
+        let data = {all: []};
+        $('.createAccessForm').each(function () {
+            data.all.push({
+                name: $(this).find('[name=name]').val(),
+                value: $(this).find('[name=value]').val(),
+            });
+        });
+        updateClient(action, data);
+    }
+
+    function _createTask() {
+        let action = $(this).data('action');
+        let $parent = $(this).closest('.table-responsive');
+        $parent.append(
+            '<form action="'+action+'" class="taskForm">\n' +
+            '    <input type="text" name="text" class="table-input" placeholder="Введите название задачи">\n' +
+            '</form>'
+        );
+        $(this).remove();
+
+
+        let $taskForm = $('.taskForm input');
+        $taskForm.focus();
+
+        $('.taskForm').submit(function () {
+            let $self = $(this);
+            updateClient(action, {
+                text: $self.find('input').val()
+            });
+            return false;
+        });
+    }
+
+    let timerId = false;
+    function _taskHandler() {
+        let action = $(this).data('action');
+        let url = $(this).parent().data('url');
+        let $tr = $(this).closest('tr');
+        let id = $(this).parent().data('task-id');
+        switch (action) {
+            case 'start':
+                 timerId = setInterval(function () {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: {
+                            action: action
+                        },
+                        success: function (resp) {
+                            $tr = $('[data-task-id='+id+']').closest('tr');
+                            $tr.find('.time_tmp').text(resp);
+                            $(document).find('title').text(resp);
+                        }
+                    })
+                }, 1000);
+                setTimeout(function () {
+                    $(updateContainer).reloadObj();
+                }, 1500);
+                self.msg({success: true, msg: 'Таймер запущен'});
+                break;
+            case 'pause':
+                clearInterval(timerId);
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        action: action
+                    },
+                    success: function (resp) {
+                        $(updateContainer).reloadObj();
+                        self.msg(resp);
+                        $(document).find('title').text('[Остановлено]');
+                    }
+                });
+                break;
+            case 'refresh':
+                clearInterval(timerId);
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        action: action
+                    },
+                    success: function (resp) {
+                        $(updateContainer).reloadObj();
+                        self.msg(resp);
+                    }
+                });
+                break;
+            case 'success':
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        action: action
+                    },
+                    success: function (resp) {
+                        $(updateContainer).reloadObj();
+                        self.msg(resp);
+                    }
+                });
+                break;
+            case 'remove':
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        action: action
+                    },
+                    success: function (resp) {
+                        $(updateContainer).reloadObj();
+                        self.msg(resp);
+                    }
+                });
+                break;
+            case 'file-rename':
+                let new_name = prompt('Введите новое имя');
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        action: action,
+                        new_name: new_name,
+                    },
+                    success: function (resp) {
+                        $(updateContainer).reloadObj();
+                        self.msg(resp);
+                    }
+                });
+                break;
+        }
+    }
+
+    function _createPayment() {
+        let $parent = $(this).closest('.table-responsive');
+        let action = $(this).data('action');
+        $parent.append(
+            '<form class="paymentForm">\n' +
+            '    <input type="text" name="name" class="table-input" placeholder="Имя">\n' +
+            '    <input type="number" name="price" class="table-input" placeholder="Цена">\n' +
+            '</form>'
+        );
+        $(this).remove();
+
+        let $inputs = $('.paymentForm input');
+        $($inputs[0]).focus();
+        $inputs.keyup(function (e) {
+            if (e.originalEvent.keyCode !== 13) {
+                return false;
+            }
+            $(this).closest('form').submit();
+        });
+
+        $('.paymentForm').submit(function () {
+            let $self = $(this);
+            updateClient(action, {
+                name: $self.find('[name=name]').val(),
+                price: $self.find('[name=price]').val(),
+            });
+
+            return false;
+        });
+    }
+
+    function _uploadFile() {
+        let $form = $(this).closest('form');
+        let url = $form.attr('action');
+        let files = this.files;
+        let data = new FormData();
+        $.each( files, function( key, value ){
+            data.append( key, value );
+        });
+        $('.files-container').loader(true);
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            data: data,
+            success: function(resp) {
+                $(updateContainer).reloadObj();
+                self.msg(resp);
+                $('.files-container').loader(false);
+            },
+            error: function( respond, textStatus, jqXHR ) {
+                alert('Неизвестная ошибка');
+            }
+        });
+
+        return false;
+    }
+
+    this.msg = function (resp) {
+        if (resp.success) {
+            self.showNotification('top','center', 3, resp.msg);
+        } else {
+            self.showNotification('top','center', 2, resp.msg);
+        }
+    };
+
+
+    this.showNotification = function (from, align, color, msg) {
+        let type = ['', 'info', 'danger', 'success', 'warning', 'rose', 'primary'];
+        let icon;
+        if (color === 3) {
+            icon = 'fas fa-check';
+        } else {
+            icon = 'fas fa-exclamation-triangle';
+        }
+        // console.log(type[color]);
+
+        $.notify({
+            icon: icon,
+            message: msg
+
+        }, {
+            type: type[color],
+            delay: 1500,
+            timer: 200,
+            // type: 'progress',
+            placement: {
+                from: from,
+                align: align
+            },
+            template: '<div data-notify="container" class="col-11 col-md-4 alert alert-{0}" role="alert">' +
+                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">' +
+                '   <i class="fas fa-times"></i>' +
+                '</button>' +
+                '<i data-notify="icon"></i>' +
+                '<span data-notify="title">{1}</span> ' +
+                '<span data-notify="message">{2}</span>' +
+                '<div class="progress" data-notify="progressbar">' +
+                '   <div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">' +
+                '   </div>' +
+                '</div>' +
+                '<a href="{3}" target="{4}" data-notify="url"></a></div>'
+        });
+    };
+}
+
+$(document).ready(function () {
+    new Crm();
+});

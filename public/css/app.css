@@ -1,0 +1,112 @@
+.navbar .collapse .navbar-nav .nav-item .nav-link {
+    font-size: 23px;
+}
+.cart-create {
+    transition: .25s;
+}
+.cart-create:hover {
+    box-shadow: 0 14px 26px -12px rgba(156,39,176,.42), 0 4px 23px 0 rgba(0,0,0,.12), 0 8px 10px -5px rgba(156,39,176,.2);
+    cursor: pointer;
+}
+.cart-create .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 150px;
+}
+.cart-create .icon {
+    font-size: 3rem;
+}
+.client-editable [data-name] {
+    position: relative;
+}
+.client-editable .editIcon {
+    position: absolute;
+    top: -6px;
+    right: -19px;
+    font-size: 0.8rem;
+    opacity: .7;
+}
+.client-editable .inputFormSave {
+    position: relative;
+    display: inline;
+}
+input.table-input {
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,.05);
+    padding: 10px 15px;
+    width: 100%;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(156,39,176,.4);
+}
+.client-editable .inputFormSave .saveButton {
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+    top: 0;
+    color: #000000;
+    opacity: .4;
+    transition: .25s;
+}
+.client-editable .inputFormSave .saveButton:hover {
+    opacity: 1;
+}
+
+.sidebar-wrapper .avatar {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    margin: 10px auto;
+}
+.sidebar-wrapper .username {
+    text-align: center;
+}
+.task-table tbody tr {
+    /*opacity: .3;*/
+    transition: .25s;
+}
+.task-table tbody tr.active {
+    opacity: 1;
+    color: #8e24aa;
+    background: #f1f1f1;
+}
+.task-table tbody tr.success {
+    position: relative;
+    opacity: .4;
+}
+.task-table tbody tr.success.active {
+    opacity: 1;
+}
+/*.task-table tbody tr.success::after {*/
+    /*content: '';*/
+    /*position: absolute;*/
+    /*width: 100%;*/
+    /*height: 2px;*/
+    /*background: #999999;*/
+    /*top: 49%;*/
+    /*left: 0;*/
+/*}*/
+td.task-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+}
+td.task-actions .icon {
+    transition: .25s;
+    color: #999;
+    font-size: 1rem;
+    margin: 0px 10px;
+}
+td.task-actions .icon:hover {
+    color: #8e24aa;
+    cursor: pointer;
+}
+
+.payment-table tr.success {
+    opacity: .4;
+}
+.alert .close i {
+    font-size: 18px;
+}
