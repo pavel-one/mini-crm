@@ -36,6 +36,24 @@
 }(window, document, window.jQuery));
 
 function Crm() {
+    /**
+     * Блокировка страницы если запущен таймер
+     * @type {boolean}
+     */
+    let blockedPage = false;
+    window.addEventListener("beforeunload", function (e) {
+        if (!blockedPage)
+            return;
+
+        let confirmationMessage = 'Сначала остановите таймер';
+
+        (e || window.event).returnValue = confirmationMessage;
+        return confirmationMessage;
+    });
+
+    /**
+     * Оформление таблиц
+     */
     $(document).on('mouseover', '.table tr', function () {
         let table = $(this).closest('.table');
         $('.table tr').removeClass('active');
@@ -44,6 +62,10 @@ function Crm() {
     $(document).on('mouseout', '.table tr', function () {
         $('.table tr').removeClass('active');
     });
+
+    /**
+     * Laravel csrf токен
+     */
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -205,6 +227,7 @@ function Crm() {
         let id = $(this).parent().data('task-id');
         switch (action) {
             case 'start':
+                blockedPage = true;
                 timerId = setInterval(function () {
                     $.ajax({
                         url: url,
@@ -231,6 +254,7 @@ function Crm() {
                 self.msg({success: true, msg: 'Таймер запущен'});
                 break;
             case 'pause':
+                blockedPage = false;
                 clearInterval(timerId);
                 $.ajax({
                     url: url,
