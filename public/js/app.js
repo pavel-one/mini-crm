@@ -8,7 +8,7 @@
             if (enable) {
                 $(this).css('position', 'relative');
                 $(this).append(
-                    '<div id="form_loader" style="position: absolute;z-index: 999;display: flex;flex-direction: column;justify-content: center;text-align: center;width: 100%;height: 100%;background: rgba(0,0,0,.15);left: 0;top: 0;">' +
+                    '<div id="form_loader" style="position: absolute;z-index: 999;display: flex;flex-direction: column;justify-content: center;filter: blur(10px);text-align: center;width: 100%;height: 100%;background: rgba(0,0,0,.15);left: 0;top: 0;">' +
                     '<img src="' + loaderUrl + '" alt="">' +
                     '</div>'
                 );
@@ -219,6 +219,7 @@ function Crm() {
     }
 
     let timerId = false;
+    let foo = 0;
 
     function _taskHandler() {
         let action = $(this).data('action');
@@ -229,6 +230,14 @@ function Crm() {
             case 'start':
                 blockedPage = true;
                 timerId = setInterval(function () {
+
+                    foo++;
+                    if ((foo % 2) === 0) {
+                        $('#favicon').attr('href', 'favicon2.ico');
+                    } else {
+                        $('#favicon').attr('href', 'favicon64.ico');
+                    }
+
                     $.ajax({
                         url: url,
                         method: 'POST',
@@ -255,6 +264,7 @@ function Crm() {
                 break;
             case 'pause':
                 blockedPage = false;
+                $('#favicon').attr('href', 'favicon64.ico');
                 clearInterval(timerId);
                 $.ajax({
                     url: url,

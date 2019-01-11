@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <base href="{{ url('/') }}">
+
+    <link id="favicon" rel="shortcut icon" type="image/png" href="/favicon64.ico">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
