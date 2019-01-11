@@ -40,7 +40,11 @@ class TaskController extends Controller
                 $task->update([
                     'time_tmp' => $time_tmp + 1,
                 ]);
-                return timeFormat($task->time_tmp);
+
+                return response()->json([
+                    'time' => timeFormat($task->time_tmp),
+                    'second' => $task->time_tmp
+                ]);
                 break;
             case 'pause':
                 if (!$time_tmp) {

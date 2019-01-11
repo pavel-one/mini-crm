@@ -214,8 +214,14 @@ function Crm() {
                         },
                         success: function (resp) {
                             $tr = $('[data-task-id=' + id + ']').closest('tr');
-                            $tr.find('.time_tmp').text(resp);
-                            $(document).find('title').text(resp);
+                            $tr.find('.time_tmp').text(resp.time);
+                            $(document).find('title').text(resp.time);
+                            if ((resp.second % 1800) === 0) {
+                                let audio = new Audio();
+                                audio.preload = 'auto';
+                                audio.src = '/shabani.wav';
+                                audio.play();
+                            }
                         }
                     })
                 }, 1000);
