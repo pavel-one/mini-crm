@@ -102,8 +102,8 @@ function Crm() {
 
         $parent.html(
             '<div class="inputFormSave"> ' +
-                '<input class="table-input" name="'+name+'" value="'+val+'" />' +
-                '<span class="saveButton"><i class="fas fa-check"></i></span>' +
+            '<input class="table-input" name="' + name + '" value="' + val + '" />' +
+            '<span class="saveButton"><i class="fas fa-check"></i></span>' +
             '</div>'
         );
 
@@ -112,7 +112,7 @@ function Crm() {
         $inputFormSave.keyup(function (e) {
             if (e.originalEvent.keyCode == 13) {
                 $(this).parent().find('.saveButton').click();
-            } 
+            }
         });
 
         $parent.find('.saveButton').click(function () {
@@ -177,7 +177,7 @@ function Crm() {
         let action = $(this).data('action');
         let $parent = $(this).closest('.table-responsive');
         $parent.append(
-            '<form action="'+action+'" class="taskForm">\n' +
+            '<form action="' + action + '" class="taskForm">\n' +
             '    <input type="text" name="text" class="table-input" placeholder="Введите название задачи">\n' +
             '</form>'
         );
@@ -197,6 +197,7 @@ function Crm() {
     }
 
     let timerId = false;
+
     function _taskHandler() {
         let action = $(this).data('action');
         let url = $(this).parent().data('url');
@@ -204,7 +205,7 @@ function Crm() {
         let id = $(this).parent().data('task-id');
         switch (action) {
             case 'start':
-                 timerId = setInterval(function () {
+                timerId = setInterval(function () {
                     $.ajax({
                         url: url,
                         method: 'POST',
@@ -212,7 +213,7 @@ function Crm() {
                             action: action
                         },
                         success: function (resp) {
-                            $tr = $('[data-task-id='+id+']').closest('tr');
+                            $tr = $('[data-task-id=' + id + ']').closest('tr');
                             $tr.find('.time_tmp').text(resp);
                             $(document).find('title').text(resp);
                         }
@@ -264,6 +265,24 @@ function Crm() {
                         self.msg(resp);
                     }
                 });
+                break;
+            case 'rename-task':
+                let text = $tr.find('.task-text').text();
+                let newName = prompt('Введите новое имя задачи', text);
+                if (newName) {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: {
+                            text: newName,
+                            action: action
+                        },
+                        success: function (resp) {
+                            $(updateContainer).reloadObj();
+                            self.msg(resp);
+                        }
+                    });
+                }
                 break;
             case 'remove':
                 $.ajax({
@@ -332,8 +351,8 @@ function Crm() {
         let url = $form.attr('action');
         let files = this.files;
         let data = new FormData();
-        $.each( files, function( key, value ){
-            data.append( key, value );
+        $.each(files, function (key, value) {
+            data.append(key, value);
         });
         $('.files-container').loader(true);
 
@@ -345,12 +364,12 @@ function Crm() {
             contentType: false,
             dataType: 'json',
             data: data,
-            success: function(resp) {
+            success: function (resp) {
                 $(updateContainer).reloadObj();
                 self.msg(resp);
                 $('.files-container').loader(false);
             },
-            error: function( respond, textStatus, jqXHR ) {
+            error: function (respond, textStatus, jqXHR) {
                 alert('Неизвестная ошибка');
             }
         });
@@ -360,9 +379,9 @@ function Crm() {
 
     this.msg = function (resp) {
         if (resp.success) {
-            self.showNotification('top','center', 3, resp.msg);
+            self.showNotification('top', 'center', 3, resp.msg);
         } else {
-            self.showNotification('top','center', 2, resp.msg);
+            self.showNotification('top', 'center', 2, resp.msg);
         }
     };
 

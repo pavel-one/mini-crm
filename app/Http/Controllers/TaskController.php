@@ -70,6 +70,12 @@ class TaskController extends Controller
                 $task->delete();
                 return $this->error('Задача удалена');
                 break;
+            case 'rename-task':
+                $task->update([
+                    'text' => $request->text,
+                ]);
+                return $this->success('Задача изменена');
+                break;
         }
         return $this->error('Ошибка');
     }

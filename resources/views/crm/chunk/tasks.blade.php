@@ -33,7 +33,7 @@
                         @foreach($tasks as $item)
                             <tr class="{{ $item->active ? 'success' : ''}}">
                                 <td>
-                                    <b>{!! $item->text !!}</b>
+                                    <b class="task-text">{!! $item->text !!}</b>
                                     @if(!$item->active)
                                         @if($item->time_tmp)
                                             <span class="badge badge-primary">Запущен</span>
@@ -75,6 +75,9 @@
                                         </div>
                                     @endif
                                     @if($item->active === 0)
+                                        <div class="icon" data-action="rename-task">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </div>
                                         <div class="icon" data-action="success">
                                             <i class="fas fa-check"></i>
                                         </div>
