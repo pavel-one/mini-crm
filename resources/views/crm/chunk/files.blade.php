@@ -33,15 +33,16 @@
                                 <td>{{ formatSize($item->size) }}</td>
                                 <td class="task-actions"
                                     data-url="{{ route('UploadUpdate', $item->id) }}">
-                                    <div class="icon" data-action="file-rename">
+                                    <div class="icon" data-action="file-rename" title="Переименовать">
                                         <i class="fas fa-pencil-alt"></i>
                                     </div>
                                     <a class="icon"
+                                       title="Скачать"
                                        href="{{ route('Download', $client->id).'?name='.$item->name }}"
                                        target="_blank">
                                         <i class="fas fa-download"></i>
                                     </a>
-                                    <div class="icon" data-action="remove">
+                                    <div class="icon" data-action="remove" title="Удалить">
                                         <i class="fas fa-trash"></i>
                                     </div>
                                 </td>

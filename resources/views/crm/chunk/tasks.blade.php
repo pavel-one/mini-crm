@@ -36,10 +36,12 @@
                                     <b class="task-text">{!! $item->text !!}</b>
                                     @if(!$item->active)
                                         @if($item->time_tmp)
-                                            <span class="badge badge-primary">Запущен</span>
+                                            <span class="badge badge-primary"
+                                                  title="Задачу делают прямо сейчас">Запущен</span>
                                         @endif
                                         @if($item->time)
-                                            <span class="badge badge-secondary">В процессе</span>
+                                            <span class="badge badge-secondary"
+                                                  title="Задачу начали делать">В процессе</span>
                                         @endif
                                     @endif
                                 </td>
@@ -55,30 +57,30 @@
                                 >
                                     @if($item->active === 0)
                                         @if($item->time_tmp)
-                                            <div class="icon" data-action="pause">
+                                            <div class="icon" data-action="pause" title="Остановить">
                                                 <i class="fas fa-pause"></i>
                                             </div>
                                         @else
-                                            <div class="icon" data-action="start">
+                                            <div class="icon" data-action="start" title="Запустить">
                                                 <i class="fas fa-play"></i>
                                             </div>
                                         @endif
 
                                     @endif
 
-                                    <div class="icon" data-action="refresh">
+                                    <div class="icon" data-action="refresh" title="Сбросить">
                                         <i class="fas fa-sync-alt"></i>
                                     </div>
                                     @if($item->active === 1)
-                                        <div class="icon" data-action="remove">
+                                        <div class="icon" data-action="remove" title="Удалить">
                                             <i class="fas fa-trash"></i>
                                         </div>
                                     @endif
                                     @if($item->active === 0)
-                                        <div class="icon" data-action="rename-task">
+                                        <div class="icon" data-action="rename-task" title="Переимновать">
                                             <i class="fas fa-pencil-alt"></i>
                                         </div>
-                                        <div class="icon" data-action="success">
+                                        <div class="icon" data-action="success" title="Пометить как выполненная">
                                             <i class="fas fa-check"></i>
                                         </div>
                                     @endif

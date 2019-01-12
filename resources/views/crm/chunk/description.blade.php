@@ -107,7 +107,7 @@
                         <button class="ql-clean"></button>
                     </span>
                                 </div>
-                                <div id="editor">
+                                <div id="editor" title="Редактировать">
                                     @if($client->full_description)
                                         {!! $client->full_description !!}
                                     @else
