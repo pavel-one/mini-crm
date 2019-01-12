@@ -339,18 +339,20 @@ function Crm() {
                 break;
             case 'file-rename':
                 let new_name = prompt('Введите новое имя');
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: {
-                        action: action,
-                        new_name: new_name,
-                    },
-                    success: function (resp) {
-                        $(updateContainer).reloadObj();
-                        self.msg(resp);
-                    }
-                });
+                if (new_name) {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: {
+                            action: action,
+                            new_name: new_name,
+                        },
+                        success: function (resp) {
+                            $(updateContainer).reloadObj();
+                            self.msg(resp);
+                        }
+                    });
+                }
                 break;
         }
     }
