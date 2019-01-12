@@ -40,6 +40,15 @@ class TaskFilesController extends Controller
             case 'file-rename':
                 $newName = $request->new_name;
                 $newName = str_replace(' ', '_', $newName);
+
+                $client_id = $upload->client_id;
+                $count_name = taskFile::where('client_id', $client_id)
+                    ->where('name', $newName)
+                    ->count();
+                if ($count_name) {
+                    return $this->error('Файл с таким именем уже существует');
+                }
+
                 $upload->update(['name' => $newName]);
                 return $this->success('Успешно переименовано');
                 break;
