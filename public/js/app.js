@@ -463,6 +463,51 @@ function Crm() {
                 '<a href="{3}" target="{4}" data-notify="url"></a></div>'
         });
     };
+    /* others */
+    let quill = null;
+    hljs.configure({
+        languages: ['javascript', 'html', 'php'],
+        useBR: false,
+    });
+    if ($('#dop-info').length) {
+        // let quill = new Quill('#editor', {
+        //     modules: { toolbar: '#toolbar' },
+        //     theme: 'snow'
+        // });
+        $(document).on('click', '#dop-info #editor', function () {
+            if ($(this).hasClass('ql-snow')) {
+                return false;
+            }
+            $('#toolbar').fadeIn();
+
+            quill = new Quill('#editor', {
+                modules: {
+                    toolbar: '#toolbar',
+                    syntax: true
+                },
+                theme: 'snow',
+            });
+
+
+            let $saveBtn = $(this).parent().find('.save-editor');
+            $saveBtn.fadeIn();
+            $saveBtn.click(function () {
+                let html = quill.root.innerHTML;
+                let $clientContainer = $(clientContainer);
+                let action = $clientContainer.data('action');
+                let editorData = {
+                    full_description: html
+                };
+                updateClient(action, editorData);
+            });
+
+            quill.focus();
+        });
+    }
+    $(document).on('click','.accordion .btn-collapse', function () {
+        $('.accordion .btn-collapse').addClass('collapsed');
+        $(this).removeClass('collapsed');
+    });
 }
 
 $(document).ready(function () {

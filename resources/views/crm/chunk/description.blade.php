@@ -13,43 +13,112 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table">
-                    <thead class=" text-primary">
-                    <tr>
-                        <th>
-                            Название
-                        </th>
-                        <th>
-                            Значение
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Телефон:</td>
-                        <td>
-                            <span data-name="phone">{{ $client->phone }}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td>
+                <div class="accordion" id="client-info">
+                    <div class="card">
+                        <button class="btn btn-collapse btn-link" type="button" data-toggle="collapse"
+                                data-target="#all-info" aria-expanded="true" aria-controls="all-info">
+                            Общая информация
+                        </button>
+
+                        <div id="all-info" class="collapse show" aria-labelledby="headingOne"
+                             data-parent="#client-info">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead class=" text-primary">
+                                    <tr>
+                                        <th>
+                                            Название
+                                        </th>
+                                        <th>
+                                            Значение
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Телефон:</td>
+                                        <td>
+                                            <span data-name="phone">{{ $client->phone }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>
                                     <span data-name="email"><a
                                                 href="mailto:{{ $client->email }}">{{ $client->email }}</a></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Url</td>
-                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Url</td>
+                                        <td>
                                     <span data-name="url">
                                         <a target="_blank" href="{{ $client->url }}">{{ $client->url }}</a>
                                     </span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="btn btn-primary">Дополнительное описание</div>
-                <div class="btn btn-info">Теги</div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <button class="btn btn-collapse collapsed btn-link" type="button" data-toggle="collapse"
+                                data-target="#dop-info" aria-expanded="false" aria-controls="dop-info">
+                            Дополнительная информация
+                        </button>
+                        <div id="dop-info" class="collapse" aria-labelledby="dop-info" data-parent="#client-info">
+                            <div class="card-body">
+                                <div style="display: none" id="toolbar">
+                  <span class="ql-formats">
+                    <select class="ql-header">
+                      <option value="1">Heading</option>
+                      <option value="2">Subheading</option>
+                      <option selected>Normal</option>
+                    </select>
+                  </span>
+                                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                                    <span class="ql-formats">
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                    </span>
+                                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                        <select class="ql-align">
+                          <option selected></option>
+                          <option value="center"></option>
+                          <option value="right"></option>
+                          <option value="justify"></option>
+                        </select>
+                    </span>
+                                    <span class="ql-formats">
+                        <button class="ql-blockquote"></button>
+                        <button class="ql-link"></button>
+                        <button class="ql-image"></button>
+                        <button class="ql-code-block"></button>
+                        <button class="ql-video"></button>
+                    </span>
+                                    <span class="ql-formats">
+                        <button class="ql-clean"></button>
+                    </span>
+                                </div>
+                                <div id="editor">
+                                    @if($client->full_description)
+                                        {!! $client->full_description !!}
+                                    @else
+                                        <p>Дополнительной информации пока что нет</p>
+                                    @endif
+                                </div>
+                                <div class="btn btn-primary save-editor" style="display: none">Сохранить</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <form action="{{ route('DeleteClient', $client->id) }}" method="post">
                     @csrf
                     {{ method_field('DELETE') }}
@@ -59,5 +128,24 @@
                 </form>
             </div>
         </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="description-crm">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Редактировать описание</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+        </form>
     </div>
 </div>

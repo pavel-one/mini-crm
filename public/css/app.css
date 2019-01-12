@@ -110,3 +110,58 @@ td.task-actions .icon:hover {
 .alert .close i {
     font-size: 18px;
 }
+.accordion .card {
+    margin: 10px 0;
+    box-shadow: none;
+    padding: 0;
+}
+.accordion .btn-collapse {
+    text-align: left;
+    background: #f1f1f1 !important;
+}
+.accordion .btn-collapse.collapsed {
+    background: none !important;
+}
+.accordion .btn-collapse::after {
+    content: '\f107';
+    font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    font-size: .9rem;
+    margin-left: 8px;
+    transition: .25s;
+    display: inline-block;
+}
+.accordion .btn-collapse.collapsed::after {
+    transform: rotate(180deg);
+}
+#dop-info #editor {
+    cursor: pointer;
+}
+.ql-editor p, .ql-editor ol, .ql-editor ul, .ql-editor pre, .ql-editor blockquote {
+    margin-bottom: 1rem;
+}
+.ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6 {
+    margin: 20px 0;
+    margin-top: 0;
+}
+blockquote, .ql-snow .ql-editor blockquote {
+    border-left: 4px solid #ccc;
+    background: #eee;
+    padding: 10px;
+    margin: 10px 0;
+}
+pre.ql-syntax {
+    background: #000;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(156,39,176,.4);
+}
+.ql-toolbar.ql-snow {
+    border: none;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+}
+.ql-container.ql-snow {
+    border: none;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.03), 0 7px 10px -5px rgba(156,39,176,.4);
+}

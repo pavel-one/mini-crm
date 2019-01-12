@@ -52,7 +52,4 @@
     <script src="theme/assets/js/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="theme/assets/js/material-dashboard.min.js?v=2.1.1" type="text/javascript"></script>
-
-    <link rel="stylesheet" href="css/app.css">
-    <script src="js/app.js"></script>
 </head>

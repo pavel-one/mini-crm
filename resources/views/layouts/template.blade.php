@@ -16,5 +16,6 @@
         </footer>
     </div>
 </div>
+@include('chunks.scripts')
 </body>
 </html>
