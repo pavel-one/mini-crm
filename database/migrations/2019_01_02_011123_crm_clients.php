@@ -15,14 +15,15 @@ class CrmClients extends Migration
     {
         Schema::create('crm_clients', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('active')->default(0);
+            $table->boolean('active')->default(0);
             $table->integer('price')->default(0);
             $table->string('name');
             $table->string('url');
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('time')->nullable();
-            $table->text('description')->nullable();
+            $table->string('description')->nullable();
+            $table->text('full_description')->nullable();
             $table->timestamps();
         });
     }

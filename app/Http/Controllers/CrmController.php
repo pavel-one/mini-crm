@@ -81,7 +81,7 @@ class CrmController extends Controller
     public function store(Request $request)
     {
         $client = CrmClient::create($request->all());
-        return redirect(route('CrmPage', $client->id));
+        return redirect()->route('CrmPage', $client->id);
     }
 
     public function access(CrmClient $client, Request $request)

@@ -48,6 +48,8 @@
                     </tr>
                     </tbody>
                 </table>
+                <div class="btn btn-primary">Дополнительное описание</div>
+                <div class="btn btn-info">Теги</div>
                 <form action="{{ route('DeleteClient', $client->id) }}" method="post">
                     @csrf
                     {{ method_field('DELETE') }}

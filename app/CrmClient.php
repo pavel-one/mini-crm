@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CrmClient extends Model
 {
-    public $fillable = ['name', 'url', 'phone', 'email', 'description'];
+    public $fillable = ['name', 'url', 'phone', 'email', 'description', 'full_description'];
 
     public function delete()
     {

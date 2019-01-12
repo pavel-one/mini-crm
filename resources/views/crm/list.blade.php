@@ -49,27 +49,22 @@
                     <div class="form-group">
                         <label for="name">Имя</label>
                         <input type="text" required class="form-control" name="name" id="name" aria-describedby="emailHelp" placeholder="">
-                        <small class="form-text text-muted">Имя проекта.</small>
                     </div>
                     <div class="form-group">
                         <label for="url">Url</label>
                         <input type="text" required class="form-control" name="url" id="url" placeholder="">
-                        <small class="form-text text-muted">Url проекта.</small>
                     </div>
                     <div class="form-group">
                         <label for="phone">Телефон</label>
                         <input type="text" class="form-control" name="phone" id="phone" placeholder="">
-                        <small class="form-text text-muted">Телефон клиента, например +79996991374.</small>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="">
-                        <small id="emailHelp" class="form-text text-muted">Email клиента.</small>
+                        <input type="text" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label for="description">Описание</label>
-                        <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
-                        <small class="form-text text-muted">Описание проекта</small>
+                        <label for="description">Краткое описание</label>
+                        <input class="form-control" name="description" id="description" />
                     </div>
 
                 </div>
