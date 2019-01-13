@@ -7,13 +7,13 @@
     <div class="sidebar-wrapper">
         <div class="user">
             <div class="avatar">
-                <img src="{{ getUserPhoto() }}" alt="">
+                <img src="{{ getUserPhoto(Auth::user()->id) }}" alt="">
             </div>
             <div class="office">{{ Auth::user()->sudo ? 'Бог' : 'Разработчик' }}</div>
             <div class="username">
                 {{ Auth::user()->name }}
             </div>
-            <a href="{{ route('Profile') }}" style="display: block;max-width: 70%;margin: auto;" class="btn btn-default">Изменить профиль</a>
+            <a href="{{ route('Profile') }}" style="display: block;max-width: 70%;margin: 10px auto;" class="btn btn-default">Изменить профиль</a>
         </div>
         <ul class="nav">
             <li class="nav-item active  ">
@@ -32,6 +32,13 @@
                 <a class="nav-link" href="#0">
                     <i class="fas fa-users"></i>
                     <p>Мои клиенты <b>(13)</b></p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('Users') }}">
+                    <i class="fas fa-users"></i>
+                    <p>Пользователи</p>
                 </a>
             </li>
         </ul>

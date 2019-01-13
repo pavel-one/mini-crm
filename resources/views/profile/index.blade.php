@@ -40,7 +40,7 @@
             <div class="card card-profile">
                 <div class="card-avatar">
                     <a href="#pablo" id="user-photo-upload">
-                        <img class="img" src="{{ getUserPhoto() }}">
+                        <img class="img" src="{{ getUserPhoto($user->id) }}">
                     </a>
                     <input type="file" name="photo" hidden data-action="{{ route('UploadPhoto') }}">
                 </div>

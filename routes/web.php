@@ -54,6 +54,12 @@ Route::get('/clients/{client}/download', 'TaskFilesController@download')->name('
 Route::get('/profile', 'UserProfile@index')->name('Profile');
 Route::post('/profile', 'UserProfile@update');
 Route::post('/profile/photo', 'UserProfile@upload')->name('UploadPhoto');
+/**
+ * Управление пользователями
+ */
+Route::get('/users', 'UsersController@index')->name('Users');
+Route::post('/users/remove/{user}', 'UsersController@remove')->name('UserRemove');
+Route::post('/users/create', 'UsersController@create')->name('UserCreate');
 
 Route::get('login', ['as' => 'login', function () {
     return view('crm.auth', ['pagetitle' => 'Авторизация']);

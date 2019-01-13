@@ -35,9 +35,13 @@ if (!function_exists('formatSize')) {
         return config('filesystems.disks.' . $disk . '.root') . '/' . $filename;
     }
 
-    function getUserPhoto()
+    function getUserPhoto($id = false)
     {
-        $user = Auth::user();
+        if ($id) {
+            $user = \App\User::find($id);
+        } else {
+            $user = Auth::user();
+        }
         if (!$user->photo) {
             $url = asset('/no-photo.png');
         } else {

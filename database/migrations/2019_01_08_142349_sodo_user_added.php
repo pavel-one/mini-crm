@@ -14,7 +14,7 @@ class SodoUserAdded extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('sudo');
+            $table->boolean('sudo')->default(0);
         });
     }
 

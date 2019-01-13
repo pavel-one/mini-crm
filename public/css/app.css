@@ -174,3 +174,12 @@ pre.ql-syntax {
     font-size: 0.8rem;
     text-transform: uppercase;
 }
+.users_controller .user_photo img {
+    width: 100%;
+}
+.users_controller .user_photo {
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    border-radius: 50%;
+}

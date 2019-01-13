@@ -110,6 +110,8 @@ function Crm() {
     $(document).on('click', '#user-photo-upload', _uploadUserPhoto);
     $(document).on('submit', '#edit-profile', _editProfile);
 
+    $(document).on('click', '#create_user', _createUser);
+
     function _cartCreateClick() {
         $('#create-crm').modal('show');
     }
@@ -477,6 +479,20 @@ function Crm() {
         let action = $(this).data('action');
         updateClient(action, data);
         return false;
+    }
+    function _createUser() {
+        let action = $(this).data('action');
+        let name = prompt('Введите имя');
+        let email = prompt('Введите Email');
+        let pass = prompt('Введите пароль');
+        if (!pass || !email || !name) {
+            return false;
+        }
+        updateClient(action, {
+            name: name,
+            email: email,
+            password: pass
+        });
     }
 
     this.msg = function (resp) {

@@ -17,6 +17,7 @@ class UserProfile extends Controller
 
             return $next($request);
         });
+        $this->middleware('auth');
     }
 
     public function index()
