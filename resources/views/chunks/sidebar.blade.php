@@ -7,11 +7,13 @@
     <div class="sidebar-wrapper">
         <div class="user">
             <div class="avatar">
-                <img src="https://pp.userapi.com/9EL60AEDjkdCLQDUfwEiL4nGQJjYz0yxXE5o0Q/SkaXeKtdw8s.jpg?ava=1" alt="">
+                <img src="{{ getUserPhoto() }}" alt="">
             </div>
+            <div class="office">{{ Auth::user()->sudo ? 'Бог' : 'Разработчик' }}</div>
             <div class="username">
-                Pavel Zarubin
+                {{ Auth::user()->name }}
             </div>
+            <a href="{{ route('Profile') }}" style="display: block;max-width: 70%;margin: auto;" class="btn btn-default">Изменить профиль</a>
         </div>
         <ul class="nav">
             <li class="nav-item active  ">

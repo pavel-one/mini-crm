@@ -35,6 +35,7 @@
         }
     });
 }(window, document, window.jQuery));
+
 function setTolltip() {
     $('[title]').tooltipster({
         theme: 'tooltipster-shadow',
@@ -48,6 +49,7 @@ function setTolltip() {
         delay: 0,
     })
 }
+
 function Crm() {
     /**
      * Блокировка страницы если запущен таймер
@@ -104,6 +106,9 @@ function Crm() {
     $(document).on('click', '.createPayment', _createPayment);
 
     $(document).on('change', '.upload-form input', _uploadFile);
+
+    $(document).on('click', '#user-photo-upload', _uploadUserPhoto);
+    $(document).on('submit', '#edit-profile', _editProfile);
 
     function _cartCreateClick() {
         $('#create-crm').modal('show');
@@ -432,6 +437,48 @@ function Crm() {
         return false;
     }
 
+    function _uploadUserPhoto() {
+        let $input = $(this).parent().find('input[type=file]');
+        $input.click();
+
+        $input.change(function (e) {
+            let action = $(this).data('action');
+            let files = this.files;
+            let data = new FormData();
+
+            $.each(files, function (key, value) {
+                data.append(key, value);
+            });
+
+            $.ajax({
+                url: action,
+                type: 'POST',
+                cache: false,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                data: data,
+                success: function (resp) {
+                    $(updateContainer).reloadObj();
+                    self.msg(resp);
+                },
+                error: function (respond, textStatus, jqXHR) {
+                    alert('Неизвестная ошибка');
+                }
+            });
+        });
+
+
+        return false;
+    }
+
+    function _editProfile() {
+        let data = $(this).serialize();
+        let action = $(this).data('action');
+        updateClient(action, data);
+        return false;
+    }
+
     this.msg = function (resp) {
         if (resp.success) {
             self.showNotification('top', 'center', 3, resp.msg);
@@ -513,7 +560,7 @@ function Crm() {
         });
     }
     setTolltip();
-    $(document).on('click','.accordion .btn-collapse', function () {
+    $(document).on('click', '.accordion .btn-collapse', function () {
         $('.accordion .btn-collapse').addClass('collapsed');
         $(this).removeClass('collapsed');
     });

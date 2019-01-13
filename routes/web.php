@@ -48,10 +48,16 @@ Route::post('/upload/{client}', 'TaskFilesController@upload')->name('ClientUploa
 Route::post('/upload/{upload}/update', 'TaskFilesController@update')->name('UploadUpdate');
 Route::get('/clients/{client}/download', 'TaskFilesController@download')->name('Download');
 
+/**
+ * Профиль
+ */
+Route::get('/profile', 'UserProfile@index')->name('Profile');
+Route::post('/profile', 'UserProfile@update');
+Route::post('/profile/photo', 'UserProfile@upload')->name('UploadPhoto');
+
 Route::get('login', ['as' => 'login', function () {
     return view('crm.auth', ['pagetitle' => 'Авторизация']);
 }]);
 
 Route::post('login', 'Auth\LoginController@login');
 
-Route::get('/test', 'SudoController@index');

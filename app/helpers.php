@@ -29,8 +29,20 @@ if (!function_exists('formatSize')) {
     {
         return number_format($price, 0, '.', ' ');
     }
+
     function diskFilePath($disk, $filename)
     {
         return config('filesystems.disks.' . $disk . '.root') . '/' . $filename;
+    }
+
+    function getUserPhoto()
+    {
+        $user = Auth::user();
+        if (!$user->photo) {
+            $url = asset('/no-photo.png');
+        } else {
+            $url = asset('storage/'.$user->photo);
+        }
+        return $url;
     }
 }
