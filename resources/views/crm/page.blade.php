@@ -14,6 +14,9 @@
     <div class="row">
         @include('crm.chunk.files')
     </div>
+    <div class="row">
+        @include('crm.chunk.chat')
+    </div>
 
 
 @endsection

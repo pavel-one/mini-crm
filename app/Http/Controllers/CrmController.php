@@ -23,6 +23,7 @@ class CrmController extends Controller
     {
         $access = $client->access()->get();
         $payments = $client->payments()->get();
+        $messagess = $client->messagess()->get();
 
         $tasks = $client->tasks()->orderBy('active', 'asc')->orderBy('time', 'desc')->get();
         $allTime = 0;
@@ -55,6 +56,7 @@ class CrmController extends Controller
             'tasks' => false,
             'payments' => false,
             'files' => false,
+            'messagess' => false,
             'fileSizes' => $fileSizes,
             'clientPrice' => $clientPrice,
             'allTime' => $allTime,
@@ -71,6 +73,9 @@ class CrmController extends Controller
         }
         if (count($files)) {
             $params['files'] = $files;
+        }
+        if (count($messagess)) {
+            $params['messagess'] = $messagess;
         }
 
 //        dd($params);

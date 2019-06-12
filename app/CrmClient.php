@@ -14,6 +14,7 @@ class CrmClient extends Model
         $this->tasks()->delete();
         $this->payments()->delete();
         $this->files()->delete();
+        $this->messagess()->delete();
         return parent::delete();
     }
 
@@ -38,5 +39,10 @@ class CrmClient extends Model
     public function files()
     {
         return $this->hasMany('App\TaskFile', 'client_id', 'id');
+    }
+
+    public function messagess()
+    {
+        return $this->hasMany('App\ClientChat', 'client_id', 'id');
     }
 }
