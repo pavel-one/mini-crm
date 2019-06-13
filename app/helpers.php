@@ -45,8 +45,13 @@ if (!function_exists('formatSize')) {
         if (!$user->photo) {
             $url = asset('/no-photo.png');
         } else {
-            $url = asset('storage/'.$user->photo);
+            $url = asset('storage/' . $user->photo);
         }
         return $url;
+    }
+
+    function dateFormat($date)
+    {
+        return date('d.m.y H:i	', strtotime($date));
     }
 }

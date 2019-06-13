@@ -34,7 +34,11 @@ Route::post('/clients/{client}/access', ['as' => 'AccessUpdate', 'uses' => 'CrmC
  */
 Route::post('/clients/{client}/task/create', ['as' => 'TaskAction', 'uses' => 'TaskController@create']);
 Route::post('/clients/{client}/task/{task}', ['as' => 'TaskUpdate', 'uses' => 'TaskController@update']);
-
+/**
+ * Управление чатом
+ */
+Route::post('/clients/{client}/chat/create', ['as' => 'NewMessage', 'uses' => 'ClentChatController@create']);
+Route::get('/clients/{client}/chat/getAll', ['as' => 'GetAll', 'uses' => 'ClentChatController@all']);
 /**
  * Управление оплатами
  */
@@ -71,9 +75,9 @@ Route::get('login', ['as' => 'login', function () {
 
 Route::post('login', 'Auth\LoginController@login');
 
-Route::get('test/{file}', 'AboutController@test');
-Route::get('test', function () {
-    phpinfo();
-});
+//Route::get('test/{file}', 'AboutController@test');
+//Route::get('test', function () {
+//    phpinfo();
+//});
 
-Route::get('test_chat', 'ClentChatController@test');
+//Route::get('test_chat', 'ClentChatController@test');

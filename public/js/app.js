@@ -8,7 +8,7 @@
             if (enable) {
                 $(this).css('position', 'relative');
                 $(this).append(
-                    '<div id="form_loader" style="position: absolute;z-index: 999;display: flex;flex-direction: column;justify-content: center;filter: blur(10px);text-align: center;width: 100%;height: 100%;background: rgba(0,0,0,.15);left: 0;top: 0;">' +
+                    '<div id="form_loader" style="position: absolute;z-index: 999;display: flex;flex-direction: column;justify-content: center;text-align: center;width: 100%;height: 100%;background: rgba(0,0,0,.15);left: 0;top: 0;">' +
                     '<img src="' + loaderUrl + '" alt="">' +
                     '</div>'
                 );
@@ -17,18 +17,22 @@
                 $(this).css('position', 'auto');
             }
         },
-        reloadObj: function () {
+        reloadObj: function (loader = true) {
             let className = '';
             this[0].classList.forEach((item) => {
                 className += '.' + item;
             });
-            $(className).loader(true);
+            if (loader) {
+                $(className).loader(true);
+            }
             $.ajax({
                 url: window.location.href,
                 dataType: 'html',
                 success: function (resp) {
                     $(document).find(className).html($(resp).find(className).html());
-                    $(className).loader(false);
+                    if (loader) {
+                        $(className).loader(false);
+                    }
                     setTolltip();
                 }
             });
@@ -48,6 +52,10 @@ function setTolltip() {
         content: 'Редактировать',
         delay: 0,
     })
+}
+
+function countProperties(obj) {
+    return Object.keys(obj).length;
 }
 
 function Crm() {
@@ -111,6 +119,66 @@ function Crm() {
     $(document).on('submit', '#edit-profile', _editProfile);
 
     $(document).on('click', '#create_user', _createUser);
+
+    $(document).on('submit', '.chat-footer form', _createMessage);
+
+    /** Работа с чатом */
+    setInterval(function () {
+        self.updateChat();
+    }, 1500);
+    function _createMessage() {
+        let th = $(this);
+        let data = th.serialize();
+        let url = th.attr('action');
+        th.loader(true);
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            data: data,
+            method: 'POST',
+            error: function () {
+                let resp = {
+                    success: false,
+                    msg: 'Ошибка отправки сообщения'
+                };
+                self.msg(resp);
+                th.loader(false);
+            },
+            success: function (response) {
+                th.loader(false);
+                let resp = {
+                    success: true,
+                    msg: 'Успшено отправлено'
+                };
+                th.trigger('reset');
+                self.msg(resp);
+                self.updateChat();
+            }
+        });
+        return false;
+    }
+
+    this.updateChat = function () {
+        let url = $('.chat-footer form').data('get');
+
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function (response) {
+                let $messagess = $('.chat-body .message');
+                let countResponse = countProperties(response);
+                let countLocal = $messagess.length;
+
+                let text = '<i class="fas fa-dumbbell"></i> Количество сообщений: '+countResponse;
+                $('.chat-container .card-footer').html(text);
+
+                if (countLocal !== countResponse) {
+                    $('.reload-chat').reloadObj();
+                    console.log('reload');
+                }
+            }
+        });
+    };
 
     function _cartCreateClick() {
         $('#create-crm').modal('show');
@@ -480,6 +548,7 @@ function Crm() {
         updateClient(action, data);
         return false;
     }
+
     function _createUser() {
         let action = $(this).data('action');
         let name = prompt('Введите имя');

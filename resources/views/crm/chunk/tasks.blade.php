@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-md-7">
+<div class="col-xs-12 col-md-6">
     <div class="card">
         <div class="card-header card-header-primary card-header-icon">
             <div class="card-icon">

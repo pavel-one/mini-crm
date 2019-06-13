@@ -37,8 +37,14 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('Users') }}">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-user-shield"></i>
                     <p>Пользователи</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('About') }}">
+                    <i class="fas fa-journal-whills"></i>
+                    <p>Общая информация</p>
                 </a>
             </li>
         </ul>

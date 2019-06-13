@@ -13,12 +13,12 @@ class ClientChat extends Model
 
     public function client()
     {
-        return $this->belongsTo('App\CrmClient', 'id', 'client_id');
+        return $this->hasOne('App\CrmClient', 'id', 'client_id');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\CrmClient', 'id', 'client_id');
+        return $this->hasOne('App\User', 'id', 'user_id');
     }
 
     public function save(array $options = [])

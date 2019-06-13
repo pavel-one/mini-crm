@@ -183,3 +183,91 @@ pre.ql-syntax {
     overflow: hidden;
     border-radius: 50%;
 }
+#editor h1 {
+    font-size: 1.7rem;
+}
+.ql-editor strong, strong {
+    font-weight: bold;
+}
+
+.chat-body .message {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.chat-body {
+    overflow-y: scroll;
+    max-height: 450px;
+}
+.chat-body .message-photo {
+    border-radius: 50%;
+    max-width: 50px;
+    overflow: hidden;
+    margin-right: 20px;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(156,39,176,.4);
+}
+.chat-body .message-photo img{
+    width: 100%;
+}
+.chat-body .message {
+    margin: 2px 0;
+    padding: 10px;
+}
+.chat-body .message .message-name {
+    font-weight: bold;
+}
+.chat-body .message-body-top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.chat-body .message-date {
+    color: #999999;
+    font-size: .9em;
+    margin-left: 20px;
+}
+.chat-footer input {
+    width: 100%;
+    transition: .25s;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,.05);
+    padding: 10px 15px;
+}
+.chat-footer input:focus {
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(156,39,176,.4);
+}
+.chat-footer {
+    position: relative;
+    margin-top: 20px;
+
+}
+.chat-footer button {
+    position: absolute;
+    right: 1%;
+    top: 22%;
+    background: none;
+    border: none;
+    color: #9c27b0;
+    font-size: 1.3em;
+    cursor: pointer;
+}
+
+#chat::-webkit-scrollbar {
+    width: 7px;
+}
+
+#chat::-webkit-scrollbar-track  {
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(156,39,176,.4);
+    border-radius: 10px;
+}
+
+#chat::-webkit-scrollbar-thumb  {
+    border-radius: 10px;
+    background: #9c27b0;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(156,39,176,.4);
+}
+
+#chat::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(255,0,0,0.4);
+}​

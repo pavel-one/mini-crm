@@ -23,7 +23,7 @@ class CrmController extends Controller
     {
         $access = $client->access()->get();
         $payments = $client->payments()->get();
-        $messagess = $client->messagess()->get();
+        $messagess = $client->messagess()->get()->sortByDesc('created_at');
 
         $tasks = $client->tasks()->orderBy('active', 'asc')->orderBy('time', 'desc')->get();
         $allTime = 0;
