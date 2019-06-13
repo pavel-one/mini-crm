@@ -4,16 +4,20 @@
             Pavel.One CRM
         </a>
     </div>
+    @php
+        $auth = Auth::user();
+    @endphp
     <div class="sidebar-wrapper">
         <div class="user">
             <div class="avatar">
-                <img src="{{ getUserPhoto(Auth::user()->id) }}" alt="">
+                <img src="{{ getUserPhoto($auth->id) }}" alt="">
             </div>
-            <div class="office">{{ Auth::user()->sudo ? 'Бог' : 'Разработчик' }}</div>
+            <div class="office">{{ $auth->sudo ? 'Бог' : 'Разработчик' }}</div>
             <div class="username">
-                {{ Auth::user()->name }}
+                {{ $auth->name }}
             </div>
-            <a href="{{ route('Profile') }}" style="display: block;max-width: 70%;margin: 10px auto;" class="btn btn-default">Мой профиль</a>
+            <a href="{{ route('Profile') }}" style="display: block;max-width: 70%;margin: 10px auto;"
+               class="btn btn-default">Мой профиль</a>
         </div>
         <ul class="nav">
             <li class="nav-item active  ">
