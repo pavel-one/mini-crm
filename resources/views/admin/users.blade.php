@@ -27,6 +27,9 @@
                                     Email
                                 </th>
                                 <th>
+                                    Телефон
+                                </th>
+                                <th>
                                     Админ
                                 </th>
                                 <th>
@@ -43,13 +46,23 @@
                                         </div>
                                     </td>
                                     <td class="user_name">
-                                        {{ $user->name }}
+                                        <a href="#">{{ $user->name }}</a>
+                                        @if ($user->nick)
+                                            <span>({{'@'.$user->nick}})</span>
+                                        @endif
                                     </td>
                                     <td class="user_email">
                                         {{ $user->email }}
                                     </td>
+                                    <td class="user_phone">
+                                        {{ $user->phone }}
+                                    </td>
                                     <td class="user_admin">
-                                        {{ $user->sudo }}
+                                        @if ($user->sudo)
+                                            <span style="color: green">Да</span>
+                                        @else
+                                            <span style="color: red">Нет</span>
+                                        @endif
                                     </td>
                                     <td class="task-actions" data-url="{{ route('UserRemove', $user->id) }}">
                                         <div class="icon" data-action="remove">

@@ -1,14 +1,3 @@
-<div class="col-xs-12 col-md-6 chat-container" style="display: none">
-    <h2>TEST</h2>
-    @if($messagess)
-        <ul>
-            @foreach($messagess as $item)
-                {{ $item->message }}
-            @endforeach
-        </ul>
-    @endif
-</div>
-
 <div class="col-xs-12 col-md-6 chat-container">
     <div class="card">
         <div class="card-header card-header-primary card-header-icon">
@@ -23,32 +12,34 @@
         <div class="card-body">
             <div class="chat-body" id="chat">
                 <div class="reload-chat">
-                    @foreach($messagess as $item)
-                        @php
-                            $userMsg = $item->user()->get()[0];
-                        @endphp
-                        <div class="message" data-id="{{ $item->id }}">
-                            <div class="message-photo">
-                                <img src="{{ getUserPhoto($item->user_id) }}" alt="">
-                            </div>
-                            <div class="message-body">
-                                <div class="message-body-top">
-                                    <div class="message-name">
-                                        <a href="#">{{ $userMsg->name }}</a>
-                                        @if ($userMsg->nick)
-                                            <span>(@ {{ $userMsg->nick }})</span>
-                                        @endif
+                    @if ($messagess)
+                        @foreach($messagess as $item)
+                            @php
+                                $userMsg = $item->user()->get()[0];
+                            @endphp
+                            <div class="message" data-id="{{ $item->id }}">
+                                <div class="message-photo">
+                                    <img src="{{ getUserPhoto($item->user_id) }}" alt="">
+                                </div>
+                                <div class="message-body">
+                                    <div class="message-body-top">
+                                        <div class="message-name">
+                                            <a href="#">{{ $userMsg->name }}</a>
+                                            @if ($userMsg->nick)
+                                                <span>(@ {{ $userMsg->nick }})</span>
+                                            @endif
+                                        </div>
+                                        <div class="message-date">
+                                            {{ dateFormat($item->created_at) }}
+                                        </div>
                                     </div>
-                                    <div class="message-date">
-                                        {{ dateFormat($item->created_at) }}
+                                    <div class="message-text">
+                                        {{ $item->message }}
                                     </div>
                                 </div>
-                                <div class="message-text">
-                                    {{ $item->message }}
-                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    @endif
                 </div>
             </div>
             <div class="chat-footer">

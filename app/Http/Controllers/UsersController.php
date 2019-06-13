@@ -17,7 +17,6 @@ class UsersController extends Controller
     {
         $users = User::all();
         $pagetitle = 'Пользователи';
-//        dd($users);
         return view('admin.users', compact('users', 'pagetitle'));
     }
 

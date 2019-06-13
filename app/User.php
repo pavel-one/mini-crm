@@ -32,4 +32,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class);
     }
+
+    public function messagess()
+    {
+        return $this->hasMany('App\ClientChat', 'user_id', 'id');
+    }
+
+    public function delete()
+    {
+        $this->tasks()->delete();
+        $this->messagess()->delete();
+
+        return parent::delete();
+    }
 }
