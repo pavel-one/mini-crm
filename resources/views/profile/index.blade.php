@@ -63,4 +63,15 @@
             </div>
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">Мои сообщения</h4>
+                <p class="card-category">Отвечай, ругайся, подчиняйся</p>
+            </div>
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
 @endsection

@@ -45,4 +45,12 @@ class User extends Authenticatable
 
         return parent::delete();
     }
+
+    public function save(array $options = [])
+    {
+        if ($this->nick) {
+            $this->nick = str_replace(' ', '_', $this->nick);
+        }
+        return parent::save($options);
+    }
 }

@@ -24,9 +24,12 @@
                                 <div class="message-body">
                                     <div class="message-body-top">
                                         <div class="message-name">
-                                            <a href="#">{{ $userMsg->name }}</a>
                                             @if ($userMsg->nick)
-                                                <span>(@ {{ $userMsg->nick }})</span>
+                                                <a target="_blank"
+                                                   href="{{ route('ProfilePage', $userMsg->nick) }}">{{ $userMsg->name }}</a>
+                                                <span>({{'@' . $userMsg->nick }})</span>
+                                            @else
+                                                {{ $userMsg->name }}
                                             @endif
                                         </div>
                                         <div class="message-date">

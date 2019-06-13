@@ -46,9 +46,11 @@
                                         </div>
                                     </td>
                                     <td class="user_name">
-                                        <a href="#">{{ $user->name }}</a>
                                         @if ($user->nick)
+                                            <a href="{{ route('ProfilePage', $user->nick) }}">{{ $user->name }}</a>
                                             <span>({{'@'.$user->nick}})</span>
+                                        @else
+                                            {{ $user->name }}
                                         @endif
                                     </td>
                                     <td class="user_email">

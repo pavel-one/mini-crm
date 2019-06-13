@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Image;
@@ -33,11 +34,16 @@ class UserProfile extends Controller
 
             $user->photo = asset('/no-photo.png');
         }
-
-//        dd($user);
         $pagetitle = 'Профиль';
 
         return view('profile.index', compact('user', 'pagetitle'));
+    }
+
+    public function profile($nick)
+    {
+        $user = User::where('nick', $nick)->firstOrFail();
+        $pagetitle = $user->name;
+        return view('profile.profilePage', compact('user', 'pagetitle'));
     }
 
     public function update(Request $request)

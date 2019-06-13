@@ -13,7 +13,7 @@
             <div class="username">
                 {{ Auth::user()->name }}
             </div>
-            <a href="{{ route('Profile') }}" style="display: block;max-width: 70%;margin: 10px auto;" class="btn btn-default">Изменить профиль</a>
+            <a href="{{ route('Profile') }}" style="display: block;max-width: 70%;margin: 10px auto;" class="btn btn-default">Мой профиль</a>
         </div>
         <ul class="nav">
             <li class="nav-item active  ">
