@@ -25,6 +25,18 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Телефон</label>
+                                    <input name="phone" value="{{ $user->phone }}" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Никнейм (для упоминания в чате)</label>
+                                    <input name="nick" value="{{ $user->nick }}" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Пароль</label>
                                     <input name="password" type="password" class="form-control" value="">
                                 </div>
