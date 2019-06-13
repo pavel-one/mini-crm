@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 
 class ClientChat extends Model
@@ -24,8 +25,25 @@ class ClientChat extends Model
     public function save(array $options = [])
     {
         $this->user_id = Auth::user()->id;
-//        $this->client_id = 1;
-//        $this->message = 'test';
+        if ($msg = $this->message) {
+            $first = substr($msg, 0, 1);
+            if ($first == '@') {
+                $nick = explode(' ', $msg);
+                $nick = str_replace('@', '', $nick[0]);
+                $find = User::where('nick', $nick)->first();
+                if ($find) {
+                    $this->sendEmail($msg, $find, $this->client()->get()->first());
+                }
+            }
+        }
         return parent::save($options);
+    }
+
+    public function sendEmail($msg, User $user, CrmClient $client)
+    {
+        $to = $user->email;
+        Mail::send('emails.chatnotify', ['msg' => $msg, 'user' => $user, 'client' => $client], function ($msg) use ($to) {
+            $msg->to($to)->subject('Вас упомянули!');
+        });
     }
 }

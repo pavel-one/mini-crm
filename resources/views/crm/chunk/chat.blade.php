@@ -24,6 +24,9 @@
             <div class="chat-body" id="chat">
                 <div class="reload-chat">
                     @foreach($messagess as $item)
+                        @php
+                            $userMsg = $item->user()->get()[0];
+                        @endphp
                         <div class="message" data-id="{{ $item->id }}">
                             <div class="message-photo">
                                 <img src="{{ getUserPhoto($item->user_id) }}" alt="">
@@ -31,7 +34,10 @@
                             <div class="message-body">
                                 <div class="message-body-top">
                                     <div class="message-name">
-                                        <a href="#">{{ $item->user()->get()[0]->name }}</a>
+                                        <a href="#">{{ $userMsg->name }}</a>
+                                        @if ($userMsg->nick)
+                                            <span>(@ {{ $userMsg->nick }})</span>
+                                        @endif
                                     </div>
                                     <div class="message-date">
                                         {{ dateFormat($item->created_at) }}
