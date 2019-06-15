@@ -18,7 +18,12 @@
         @php
             $fromUser = $message->fromUser()->firstOrFail();
         @endphp
-        <div class="message" data-id="{{ $message->id }}">
+        <div class="message"
+             data-id="{{ $message->id }}"
+{{--        @if (!$message->read_user)--}}
+{{--            style="background: #eeeeee"--}}
+{{--        @endif--}}
+        >
             <div class="message-photo">
                 <img src="{{ getUserPhoto($fromUser->id) }}">
             </div>
@@ -48,7 +53,10 @@
     @endforeach
 </div>
 <div class="chat-footer">
-    <form method="post" action="">
+    <form method="post"
+          action="{{ route('NewMessageLk', $topic->id) }}"
+          data-get="{{ route('LoadTopic', $topic->id) }}"
+          data-lk="true">
         @csrf
         <input type="text" autocomplete="off" name="message" placeholder="Введите сообщение">
         <button type="submit">

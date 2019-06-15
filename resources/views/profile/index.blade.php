@@ -79,7 +79,8 @@
                             @php
                                 $user_from = $topic->fromUser()->first();
                             @endphp
-                            <div class="topic" data-url="{{ route('LoadTopic', $topic->id) }}">
+                            <div class="topic" data-url="{{ route('LoadTopic', $topic->id) }}"
+                                 data-topic="{{$topic->id}}">
                                 <div class="photo">
                                     <img src="{{ getUserPhoto($user_from->id) }}" alt="">
                                 </div>
@@ -95,7 +96,7 @@
                         @endforeach
                     @endif
                 </div>
-                <div style="width: 494px" id="load-lk-chat">
+                <div class="reload-chat" style="width: 494px" id="load-lk-chat">
 
                 </div>
             </div>

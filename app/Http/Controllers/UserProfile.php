@@ -57,7 +57,7 @@ class UserProfile extends Controller
         dd($test);
     }
 
-    public function getMessages($topic_id)
+    public function getMessages($topic_id, Request $request)
     {
         /** @var UserMessage $toUser */
         $toUser = Auth::user();
@@ -73,11 +73,21 @@ class UserProfile extends Controller
             ['user_to', '=', $toUser->id],
             ['user_from', '=', $fromUser->id]
         ]);
-        $unreadMessagess = $query->get();
+
+        $queryUnread = UserMessage::where([
+            ['user_to', '=', $toUser->id],
+            ['user_from', '=', $fromUser->id],
+            ['read_user', '=', false],
+        ]);
+        if ($request->count) {
+            return $queryUnread->count();
+        }
+
+        $unreadMessagess = $queryUnread->get();
         /** @var UserMessage $message */
-//        foreach ($unreadMessagess as $message) {
-//            $message->unread();
-//        }
+        foreach ($unreadMessagess as $message) {
+            $message->read();
+        }
 
         $allMessages = $query->orWhere([
             ['user_from', '=', $toUser->id],
@@ -86,12 +96,27 @@ class UserProfile extends Controller
 
         $data = [
             'messages' => $allMessages,
-//            'to' => $toUser,
+            'topic' => $topic,
             'from' => $fromUser,
         ];
         $out = view('ajax.messages', $data);
 
         return $out;
+    }
+
+    public function newMessage(Request $request, $topic_id)
+    {
+        /** @var UserMessage $toUser */
+        $toUser = Auth::user();
+        /** @var UserMessage $topic */
+        $topic = UserMessage::where('id', $topic_id)->where('user_to', $toUser->id)->first();
+        if (!$topic) {
+            abort(404);
+        }
+        /** @var User $fromUser */
+        $fromUser = $topic->fromUser()->firstOrFail();
+
+        return $fromUser->sendMessage($request->message);
     }
 
     public function profile($nick)

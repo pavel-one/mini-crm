@@ -65,13 +65,14 @@ class User extends Authenticatable
         return parent::delete();
     }
 
-    public function sendMessage($msg, Request $request)
+    public function sendMessage($msg)
     {
         $message = new UserMessage;
         $message->user_to = $this->id;
         $message->user_from = Auth::user()->id;
         $message->text = $msg;
         $message->save();
+        return $message;
     }
 
     public function unreadMessages($user_id = null)

@@ -57,8 +57,11 @@ Route::get('/clients/{client}/download', 'TaskFilesController@download')->name('
  */
 Route::get('/profile', 'UserProfile@index')->name('Profile');
 Route::post('/profile', 'UserProfile@update');
+
 Route::get('/profile/test', 'UserProfile@test');
 Route::get('/profile/messages/{topic_id}', 'UserProfile@getMessages')->name('LoadTopic');
+Route::post('/profile/messages/{topic_id}', 'UserProfile@newMessage')->name('NewMessageLk');
+
 Route::get('/profile/{nick}', 'UserProfile@profile')->name('ProfilePage');
 Route::post('/profile/{nick}/send', 'UserProfile@send')->name('ProfileMessageSend');
 Route::post('/profile/photo', 'UserProfile@upload')->name('UploadPhoto');

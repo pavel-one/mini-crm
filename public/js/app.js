@@ -206,28 +206,65 @@ function Crm() {
     }
 
     this.updateChat = function () {
-        if (!$('.chat-footer form').length) {
+        let $form = $('.chat-footer form');
+        if (!$form.length) {
             return false;
         }
-        let url = $('.chat-footer form').data('get');
+        let url = $form.data('get');
+        let lk = $form.data('lk');
 
+        if (lk) {
+            $.ajax({
+                url: url,
+                dataType: 'html',
+                success: function (response) {
+                    let countLocal = $('.message').length;
+                    let countAjax = $(response).find('.message').length;
+                    let html = $(response).html();
+                    self.updateCount();
+
+                    if (countLocal !== countAjax) {
+                        $('#load-lk-chat').html(response);
+                    }
+                    // console.log('countLocal', countLocal);
+                    // console.log('countAjax', countAjax);
+                }
+            });
+        } else {
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                success: function (response) {
+                    let $messagess = $('.chat-body .message');
+                    let countResponse = countProperties(response);
+                    let countLocal = $messagess.length;
+
+                    let text = '<i class="fas fa-dumbbell"></i> Количество сообщений: ' + countResponse;
+                    $('.chat-container .card-footer').html(text);
+
+                    if (countLocal !== countResponse) {
+                        $('.reload-chat').reloadObj();
+                    }
+                }
+            });
+        }
+    };
+
+    this.updateCount = function () {
+        let $block = $('.topic.active');
+        // $block.loader(true);
+        let url = $block.data('url');
         $.ajax({
             url: url,
-            dataType: 'json',
+            data: {
+                count: true,
+            },
             success: function (response) {
-                let $messagess = $('.chat-body .message');
-                let countResponse = countProperties(response);
-                let countLocal = $messagess.length;
-
-                let text = '<i class="fas fa-dumbbell"></i> Количество сообщений: ' + countResponse;
-                $('.chat-container .card-footer').html(text);
-
-                if (countLocal !== countResponse) {
-                    $('.reload-chat').reloadObj();
-                    console.log('reload');
-                }
+                let count = response;
+                // $block.loader(false);
+                $block.find('.dsc').text(count+' непрочитанных');
             }
-        });
+        })
     };
 
     function _cartCreateClick() {
