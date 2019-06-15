@@ -41,11 +41,24 @@
                             </div>
                         </div>
                         <div class="buttons">
-                            <div class="btn btn-primary">Написать сообщение</div>
+                            <div class="btn btn-primary" id="msg_btn" data-url="{{ route('ProfileMessageSend', $user->nick) }}">Написать сообщение</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="message-popup">
+        <h2>Написать сообщение</h2>
+        <form enctype="multipart/form-data">
+            @csrf
+            <textarea name="text" placeholder="Введите сообщение" cols="30" rows="10"></textarea>
+            <input type="hidden" name="user_to" value="{{ $user->id }}">
+            <input type="file" placeholder="Прикрепить к сообщению">
+            <button type="submit" class="btn btn-primary">
+                Отправить
+            </button>
+        </form>
     </div>
 @endsection

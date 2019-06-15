@@ -31,6 +31,10 @@ class ClientChat extends Model
                 $nick = explode(' ', $msg);
                 $nick = str_replace('@', '', $nick[0]);
                 $find = User::where('nick', $nick)->first();
+
+                $linkProfile = route('ProfilePage', $nick);
+                $this->message = str_replace("@" . $nick, "<a target='_blank' href='{$linkProfile}'>@{$nick}</a>", $this->message);
+
                 if ($find) {
                     $this->sendEmail($msg, $find, $this->client()->get()->first());
                 }

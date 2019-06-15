@@ -59,18 +59,45 @@
                 <div class="card-body">
                     <h6 class="card-category text-gray">{{ $user->sudo ? 'Бог' : 'Разработчик' }}</h6>
                     <h4 class="card-title">{{ $user->name }}</h4>
+                    @if ($user->nick)
+                        <a href="{{ route('ProfilePage', $user->nick) }}" class="btn btn-primary">Посмотреть профиль</a>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 vk-chat">
         <div class="card">
             <div class="card-header card-header-primary">
                 <h4 class="card-title">Мои сообщения</h4>
                 <p class="card-category">Отвечай, ругайся, подчиняйся</p>
             </div>
-            <div class="card-body">
+            <div class="card-body messages-block">
+                <div class="topic-container">
+                    @if ($topics)
+                        @foreach ($topics as $topic)
+                            @php
+                                $user_from = $topic->fromUser()->first();
+                            @endphp
+                            <div class="topic" data-url="{{ route('LoadTopic', $topic->id) }}">
+                                <div class="photo">
+                                    <img src="{{ getUserPhoto($user_from->id) }}" alt="">
+                                </div>
+                                <div class="topic-body">
+                                    <div class="name">
+                                        {{ $user_from->name }}
+                                    </div>
+                                    <div class="dsc">
+                                        {{ $user->unreadMessages($user_from->id)->count() }} непрочитанных
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+                <div style="width: 494px" id="load-lk-chat">
 
+                </div>
             </div>
         </div>
     </div>

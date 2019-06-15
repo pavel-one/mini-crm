@@ -37,7 +37,7 @@
                                         </div>
                                     </div>
                                     <div class="message-text">
-                                        {{ $item->message }}
+                                        {!! $item->message !!}
                                     </div>
                                 </div>
                             </div>

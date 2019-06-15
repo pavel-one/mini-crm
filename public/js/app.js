@@ -8,7 +8,7 @@
             if (enable) {
                 $(this).css('position', 'relative');
                 $(this).append(
-                    '<div id="form_loader" style="position: absolute;z-index: 999;display: flex;flex-direction: column;justify-content: center;text-align: center;width: 100%;height: 100%;background: rgba(0,0,0,.15);left: 0;top: 0;">' +
+                    '<div id="form_loader" style="position: absolute;z-index: 999;display: flex;flex-direction: column;justify-content: center;text-align: center;width: 100%;height: 100%;/*background: rgba(0,0,0,.15)*/;left: 0;top: 0;">' +
                     '<img src="' + loaderUrl + '" alt="">' +
                     '</div>'
                 );
@@ -122,10 +122,57 @@ function Crm() {
 
     $(document).on('submit', '.chat-footer form', _createMessage);
 
-    /** Работа с чатом */
+    $(document).on('click', '#msg_btn', _popup_msg);
+
+    $(document).on('click', '.topic-container .topic', _loadTopicMessages);
+
+    $('.message-popup form').submit(function () {
+        let url = $('#msg_btn').data('url');
+        let th = $(this);
+        let data = new FormData(th.get(0));
+        $.ajax({
+            url: url,
+            data: data,
+            dataType: 'json',
+            method: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                self.msg(response);
+                $.fancybox.close();
+                th.trigger('reset');
+            }
+        });
+        return false;
+    });
+
+    /** Профиль пользователя **/
+    function _popup_msg() {
+        $.fancybox.open($('.message-popup'));
+    }
+
+    /** Работа с чатами */
     setInterval(function () {
         self.updateChat();
     }, 1500);
+
+    function _loadTopicMessages() {
+        $('.topic').removeClass('active');
+        let $th = $(this);
+        let url = $th.data('url');
+        let $loadBlock = $('#load-lk-chat');
+        $loadBlock.loader(true);
+        $.ajax({
+            url: url,
+            dataType: 'html',
+            success: function (response) {
+                $loadBlock.html(response);
+                $loadBlock.loader(false);
+                $th.addClass('active');
+            }
+        })
+    }
+
     function _createMessage() {
         let th = $(this);
         let data = th.serialize();
@@ -159,6 +206,9 @@ function Crm() {
     }
 
     this.updateChat = function () {
+        if (!$('.chat-footer form').length) {
+            return false;
+        }
         let url = $('.chat-footer form').data('get');
 
         $.ajax({
@@ -169,7 +219,7 @@ function Crm() {
                 let countResponse = countProperties(response);
                 let countLocal = $messagess.length;
 
-                let text = '<i class="fas fa-dumbbell"></i> Количество сообщений: '+countResponse;
+                let text = '<i class="fas fa-dumbbell"></i> Количество сообщений: ' + countResponse;
                 $('.chat-container .card-footer').html(text);
 
                 if (countLocal !== countResponse) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\UserMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Image;
@@ -36,7 +37,61 @@ class UserProfile extends Controller
         }
         $pagetitle = 'Профиль';
 
-        return view('profile.index', compact('user', 'pagetitle'));
+        $data = [
+            'user' => $user,
+            'pagetitle' => $pagetitle,
+            'topics' => false,
+        ];
+        $topics = $user->myMessages()->groupBy('user_from')->get();
+        if ($topics) {
+            $data['topics'] = $topics;
+        }
+
+        return view('profile.index', $data);
+    }
+
+    public function test()
+    {
+        $test = Auth::user()->unreadMessages()->count();
+
+        dd($test);
+    }
+
+    public function getMessages($topic_id)
+    {
+        /** @var UserMessage $toUser */
+        $toUser = Auth::user();
+        /** @var UserMessage $topic */
+        $topic = UserMessage::where('id', $topic_id)->where('user_to', $toUser->id)->first();
+        if (!$topic) {
+            abort(404);
+        }
+        /** @var User $fromUser */
+        $fromUser = $topic->fromUser()->firstOrFail();
+
+        $query = UserMessage::where([
+            ['user_to', '=', $toUser->id],
+            ['user_from', '=', $fromUser->id]
+        ]);
+        $unreadMessagess = $query->get();
+        /** @var UserMessage $message */
+//        foreach ($unreadMessagess as $message) {
+//            $message->unread();
+//        }
+
+        $allMessages = $query->orWhere([
+            ['user_from', '=', $toUser->id],
+            ['user_to', '=', $fromUser->id],
+        ])->get()->sortByDesc('created_at');
+
+        $data = [
+            'messages' => $allMessages,
+//            'to' => $toUser,
+            'from' => $fromUser,
+        ];
+        $out = view('ajax.messages', $data);
+
+        return $out;
     }
 
     public function profile($nick)
@@ -68,13 +123,33 @@ class UserProfile extends Controller
             ['disk' => 'public']
         );
         $fullPath = diskFilePath('public', $path);
-        $image = Image::make($fullPath)->heighten(130)->crop(130, 130);
+        $image = Image::make($fullPath)->fit(130, 130, function ($img) {
+            $img->upsize();
+        });
         $image->save($fullPath);
-//        dd($path);
         $this->user->update([
             'photo' => $path
         ]);
         return $this->success('Аватарка обновлена');
+    }
+
+    public function send(Request $requset, $nick)
+    {
+        /** @var User $user */
+        $text = $requset->text;
+
+        if (!$text) {
+            return $this->error('Не заполнено одно из полей');
+        }
+
+        $user = User::where('nick', $nick)->first();
+        if (!$user) {
+            return $this->error('Нет такого пользователя');
+        }
+        $user->sendMessage($text, $requset);
+
+        return $this->success('Сообщение отправлено');
+
     }
 
     public function error($msg)
