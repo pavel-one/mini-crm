@@ -64,6 +64,14 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'mail' => [
+            'driver'     => 'webdav',
+            'baseUri'    => 'https://webdav.cloud.mail.ru',
+            'userName'   => 'keyt.tod.63@mail.ru',
+            'password'   => '+i9nrT5OOqxY',
+            'pathPrefix' => '', // optional
+        ],
+
     ],
 
 ];

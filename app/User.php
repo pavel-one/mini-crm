@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use NikitaKiselev\SendPulse\SendPulse;
 
 class User extends Authenticatable
 {
@@ -72,6 +73,21 @@ class User extends Authenticatable
         $message->user_from = Auth::user()->id;
         $message->text = $msg;
         $message->save();
+
+        $dataPush = [
+            'title' => 'Новое сообщение',
+            'website_id' => 44319,
+            'body' => $message->text,
+            'link' => route('Profile'),
+            'ttl' => 20,
+        ];
+        if ($this->photo) {
+            $dataPush['image'] = [
+                'name' => 'test.jpg',
+                'data' => file_get_contents(storage_path('app/public/'.$this->photo)),
+            ];
+        }
+        $out = SendPulse::createPushTask($dataPush);
         return $message;
     }
 

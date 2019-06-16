@@ -6,7 +6,9 @@ use App\User;
 use App\UserMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Image;
+use NikitaKiselev\SendPulse\SendPulse;
 
 class UserProfile extends Controller
 {
@@ -52,9 +54,7 @@ class UserProfile extends Controller
 
     public function test()
     {
-        $test = Auth::user()->unreadMessages()->count();
-
-        dd($test);
+        dd('test');
     }
 
     public function getMessages($topic_id, Request $request)

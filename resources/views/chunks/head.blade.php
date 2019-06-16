@@ -52,4 +52,6 @@
     <script src="theme/assets/js/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="theme/assets/js/material-dashboard.min.js?v=2.1.1" type="text/javascript"></script>
+
+    <script charset="UTF-8" src="//cdn.sendpulse.com/js/push/3de0b2161121a98dcc537dd0d8d54eee_1.js" async></script>
 </head>
