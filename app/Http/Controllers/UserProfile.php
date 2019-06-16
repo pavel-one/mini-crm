@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\UserMessage;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Image;
@@ -57,6 +58,12 @@ class UserProfile extends Controller
         dd('test');
     }
 
+    /**
+     * Получение сообщений в чате
+     * @param $topic_id
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getMessages($topic_id, Request $request)
     {
         /** @var UserMessage $toUser */
@@ -104,6 +111,11 @@ class UserProfile extends Controller
         return $out;
     }
 
+    /**
+     * @param Request $request
+     * @param $topic_id
+     * @return UserMessage
+     */
     public function newMessage(Request $request, $topic_id)
     {
         /** @var UserMessage $toUser */
@@ -119,6 +131,11 @@ class UserProfile extends Controller
         return $fromUser->sendMessage($request->message);
     }
 
+    /**
+     * Отправка view
+     * @param $nick
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function profile($nick)
     {
         $user = User::where('nick', $nick)->firstOrFail();
@@ -126,6 +143,11 @@ class UserProfile extends Controller
         return view('profile.profilePage', compact('user', 'pagetitle'));
     }
 
+    /**
+     * Обновление профиля
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request)
     {
         if (!$pass = $request->password) {
@@ -137,6 +159,11 @@ class UserProfile extends Controller
         return $this->success('Данные обновлены!');
     }
 
+    /**
+     * Загрузка аватара в профиль
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function upload(Request $request)
     {
         /** @var \Illuminate\Http\UploadedFile $file */
@@ -158,8 +185,29 @@ class UserProfile extends Controller
         return $this->success('Аватарка обновлена');
     }
 
+    /**
+     * Отправка сообщения пользователю
+     * @param Request $requset
+     * @param $nick
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function send(Request $requset, $nick)
     {
+        $paths = null;
+        if ($files = $requset->allFiles()) {
+            $paths = [];
+            /** @var UploadedFile $file */
+            foreach ($files['files'] as $file) {
+                $name = $file->getClientOriginalName();
+                $type = $file->getMimeType();
+                $paths[] = [
+                    'name' => $name,
+                    'file' => $file->storeAs('messages/' . $nick, $name, ['disk' => 'public']),
+                    'mime' => $type,
+                    'disk' => 'public',
+                ];
+            }
+        }
         /** @var User $user */
         $text = $requset->text;
 
@@ -171,10 +219,22 @@ class UserProfile extends Controller
         if (!$user) {
             return $this->error('Нет такого пользователя');
         }
-        $user->sendMessage($text, $requset);
+        $user->sendMessage($text, $paths);
 
         return $this->success('Сообщение отправлено');
 
+    }
+
+    /**
+     * Скачивание файла прикрепленного к сообщению
+     * @param $filename
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function msgDownloadFile($filename)
+    {
+        $name = 'messages/' . $this->user->nick . '/' . $filename;
+        $path = diskFilePath('public', $name);
+        return response()->download($path);
     }
 
     public function error($msg)

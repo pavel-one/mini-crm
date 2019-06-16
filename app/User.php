@@ -66,27 +66,25 @@ class User extends Authenticatable
         return parent::delete();
     }
 
-    public function sendMessage($msg)
+    public function sendMessage($msg, $files = null)
     {
         $message = new UserMessage;
         $message->user_to = $this->id;
         $message->user_from = Auth::user()->id;
         $message->text = $msg;
+        if ($files) {
+            $message->files = json_encode($files);
+        }
         $message->save();
 
         $dataPush = [
-            'title' => 'Новое сообщение',
+            'title' => 'Новое сообщение для ' . $this->nick,
             'website_id' => 44319,
-            'body' => $message->text,
+            'body' => $this->name . ', проверь личные сообщения!',
             'link' => route('Profile'),
-            'ttl' => 20,
+            'ttl' => 10,
         ];
-        if ($this->photo) {
-            $dataPush['image'] = [
-                'name' => 'test.jpg',
-                'data' => file_get_contents(storage_path('app/public/'.$this->photo)),
-            ];
-        }
+
         $out = SendPulse::createPushTask($dataPush);
         return $message;
     }

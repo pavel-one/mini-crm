@@ -242,6 +242,7 @@ pre.ql-syntax {
 .chat-body .message-photo {
     border-radius: 50%;
     width: 50px;
+    min-width: 50px;
     overflow: hidden;
     margin-right: 20px;
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(156, 39, 176, .4);
@@ -249,6 +250,7 @@ pre.ql-syntax {
 
 .chat-body .message-photo img {
     width: 100%;
+    display: block;
 }
 
 .chat-body .message {
@@ -458,4 +460,16 @@ pre.ql-syntax {
 .chat-top .name span {
     font-size: .9em;
     font-weight: normal;
+}
+.message-text-files {
+    background: #f1f1f1;
+    padding: 5px 10px;
+}
+.message-text-files:before {
+    content: 'Прикпреленные файлы:';
+    font-weight: bold;
+}
+.message-text-files ol {
+    padding-left: 20px;
+    margin: 0;
 }

@@ -55,7 +55,7 @@
             @csrf
             <textarea name="text" placeholder="Введите сообщение" cols="30" rows="10"></textarea>
             <input type="hidden" name="user_to" value="{{ $user->id }}">
-            <input type="file" placeholder="Прикрепить к сообщению">
+            <input type="file" multiple="multiple" name="files[]" placeholder="Прикрепить к сообщению">
             <button type="submit" class="btn btn-primary">
                 Отправить
             </button>

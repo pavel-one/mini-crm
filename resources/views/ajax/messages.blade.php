@@ -20,9 +20,9 @@
         @endphp
         <div class="message"
              data-id="{{ $message->id }}"
-{{--        @if (!$message->read_user)--}}
-{{--            style="background: #eeeeee"--}}
-{{--        @endif--}}
+                {{--        @if (!$message->read_user)--}}
+                {{--            style="background: #eeeeee"--}}
+                {{--        @endif--}}
         >
             <div class="message-photo">
                 <img src="{{ getUserPhoto($fromUser->id) }}">
@@ -47,6 +47,24 @@
                 </div>
                 <div class="message-text">
                     {{ $message->text }}
+                    @if ($message->files)
+                        @php
+                            $files = $message->files;
+                            $files = json_decode($files);
+                        @endphp
+                        <div class="message-text-files">
+                            <ol>
+                                @foreach ($files as $file)
+                                    <li>
+                                        <a target="_blank"
+                                           href="{{ route('msgDownload', $file->name) }}">
+                                            {{ $file->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ol>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

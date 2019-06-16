@@ -129,6 +129,7 @@ function Crm() {
     $('.message-popup form').submit(function () {
         let url = $('#msg_btn').data('url');
         let th = $(this);
+        th.loader(true);
         let data = new FormData(th.get(0));
         $.ajax({
             url: url,
@@ -141,6 +142,7 @@ function Crm() {
                 self.msg(response);
                 $.fancybox.close();
                 th.trigger('reset');
+                th.loader(false);
             }
         });
         return false;
