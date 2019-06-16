@@ -220,18 +220,12 @@ function Crm() {
                 success: function (response) {
                     let countLocal = $('.message').length;
                     let countAjax = $(response).find('.message').length;
-                    let html = $(response).html();
                     self.updateCount();
-
                     let $lk = $('#load-lk-chat');
-                    // let val = $lk.find('input').val();
-                    //TODO: Не записывать ипнут
                     if (countLocal !== countAjax) {
-                        $lk.html(response);
+                        $lk.find('.chat-body').html($($(response)[2]).html());
                         $lk.find('input').focus();
                     }
-                    // console.log('countLocal', countLocal);
-                    // console.log('countAjax', countAjax);
                 }
             });
         } else {
