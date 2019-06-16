@@ -225,6 +225,7 @@ function Crm() {
 
                     if (countLocal !== countAjax) {
                         $('#load-lk-chat').html(response);
+                        $('#load-lk-chat').find('input').focus();
                     }
                     // console.log('countLocal', countLocal);
                     // console.log('countAjax', countAjax);
