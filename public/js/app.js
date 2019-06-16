@@ -223,9 +223,12 @@ function Crm() {
                     let html = $(response).html();
                     self.updateCount();
 
+                    let $lk = $('#load-lk-chat');
+                    // let val = $lk.find('input').val();
+                    //TODO: Не записывать ипнут
                     if (countLocal !== countAjax) {
-                        $('#load-lk-chat').html(response);
-                        $('#load-lk-chat').find('input').focus();
+                        $lk.html(response);
+                        $lk.find('input').focus();
                     }
                     // console.log('countLocal', countLocal);
                     // console.log('countAjax', countAjax);
