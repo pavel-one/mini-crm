@@ -35,7 +35,7 @@ class UsersController extends Controller
         $newUser = User::create($request->all());
         $newUser->realPass = $pass;
         Mail::send('emails.createuser', $newUser->toArray(), function ($m) use ($newUser) {
-            $m->to($newUser->email, 'Receiver')->subject('Вам открыт доступ!');
+            $m->to($newUser->email, 'CRM SK')->subject('Вам открыт доступ!');
         });
         return $this->success('Пользователь успешно создан');
     }

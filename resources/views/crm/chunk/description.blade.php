@@ -82,7 +82,7 @@
                                         <tr>
                                             <td>Ответственный за проект</td>
                                             <td>
-                                                <a href="{{ route('ProfilePage', $chargeableUser->nick) }}">
+                                                <a target="_blank" href="{{ route('ProfilePage', $chargeableUser->nick) }}">
                                                     {{ $chargeableUser->name }}
                                                 </a>
                                             </td>

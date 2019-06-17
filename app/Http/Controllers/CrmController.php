@@ -6,6 +6,7 @@ use App\CrmClient;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Image;
 
 class CrmController extends Controller
@@ -203,6 +204,12 @@ class CrmController extends Controller
                 $client->update([
                     'chargeable_user' => $user_id,
                 ]);
+                $user = $client->getChargeable()->first();
+                Mail::send('emails.chargeable',
+                    ['client' => $client->toArray(), 'user' => $user->toArray()],
+                    function ($m) use ($user) {
+                        $m->to($user->email, 'CRM SK')->subject('Ты ответственный!');
+                });
                 return $this->success('Ответственный успешно задан');
                 break;
         }
