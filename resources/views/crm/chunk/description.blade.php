@@ -1,3 +1,6 @@
+@php
+ $user = Auth::user();
+@endphp
 <div class="col-xs-12 col-md-6">
     <div class="card">
         <div class="card-header card-header-primary">
@@ -119,13 +122,29 @@
                         </div>
                     </div>
                 </div>
-                <form action="{{ route('DeleteClient', $client->id) }}" method="post">
-                    @csrf
-                    {{ method_field('DELETE') }}
-                    <button type="submit" class="btn btn-danger" style="width: 99%">
-                        <i class="fas fa-trash"></i> Удалить клиента
-                    </button>
-                </form>
+                @if ($user->sudo)
+                    <form action="{{ route('DeleteClient', $client->id) }}" method="post">
+                        @csrf
+                        {{ method_field('DELETE') }}
+                        <button type="submit" class="btn btn-danger" style="width: 99%">
+                            <i class="fas fa-trash"></i> Удалить клиента
+                        </button>
+                    </form>
+                    <div class="client-actions">
+                        <div class="btn btn-primary">
+                            Установить дату дедлайна
+                        </div>
+                        @if ($client->active)
+                            <div class="btn btn-danger">
+                                Снять с разработки
+                            </div>
+                        @else
+                            <div class="btn btn-success">
+                                Установить на разработку
+                            </div>
+                        @endif
+                    </div>
+                @endif
             </div>
         </div>
     </div>
