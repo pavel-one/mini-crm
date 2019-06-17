@@ -129,6 +129,10 @@ function Crm() {
     $(document).on('click', '.chat-footer .icon-attach', _FakeFile);
     $(document).on('change', '.chat-footer [type=file]', _ChangeFile);
 
+    $(document).on('click', '.client-actions [data-action]', _ClientAction);
+    $(document).on('click', '#death-line-date', _DeathLineDate);
+    $(document).on('click', '#user_chargeable', _ChargeableChange);
+
     $('.message-popup form').submit(function () {
         let url = $('#msg_btn').data('url');
         let th = $(this);
@@ -150,6 +154,91 @@ function Crm() {
         });
         return false;
     });
+
+    /** Работа с клиентами **/
+    $('#modal-date input').keyup(function (e) {
+        if (e.which == 13) {
+            let val = $(this).val();
+            let $btn = $('#death-line-date');
+            $.fancybox.close();
+            $btn.text('Дата дедлайна: '+val+'?');
+            $btn.removeClass('btn-primary').addClass('btn-success');
+            $btn.data('action', 'deadline').data('date', val);
+        }
+    });
+    function _ChargeableChange() {
+
+        $.fancybox.open({
+            src: '#chargeable-change',
+        });
+    }
+    $('#chargeable-change select').change(function () {
+        let url = $('.client-actions').data('url');
+        let val = $(this).val();
+        let data = {
+            action: 'user_chargeable',
+            user_id: val,
+        };
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            data: data,
+            method: 'POST',
+            success: function (response) {
+                self.msg(response);
+                $.fancybox.close();
+                if (response.success) {
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                }
+            }
+        })
+    });
+    function _DeathLineDate() {
+        let action = $(this).data('action');
+        if (action) {
+            let url = $(this).parent().data('url');
+            let date = $(this).data('date');
+            let data = {
+                action: action,
+                date: date,
+            };
+            _ClientAction(action, url, data);
+            return false;
+        }
+
+        $.fancybox.open({
+            src: '#modal-date',
+        });
+    }
+    function _ClientAction(action, url, data) {
+        if (!url) {
+            url = $(this).parent().data('url');
+        }
+        if (!action) {
+            action = $(this).data('action');
+        }
+        if (!data) {
+            data = {
+                action: action
+            };
+        }
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            data: data,
+            method: 'POST',
+            success: function (response) {
+                self.msg(response);
+                if (response.success) {
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                }
+            }
+        })
+    }
 
     /** Профиль пользователя **/
     function _popup_msg() {
@@ -198,7 +287,7 @@ function Crm() {
         $.ajax({
             url: url,
             success: function (resp) {
-                $btn.text('Мой профиль ('+resp+')');
+                $btn.text('Мой профиль (' + resp + ')');
                 if (resp > 0) {
                     let audio = new Audio();
                     audio.preload = 'auto';

@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\CrmClient;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Image;
 
 class CrmController extends Controller
 {
+    public $user;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -24,6 +28,7 @@ class CrmController extends Controller
         $access = $client->access()->get();
         $payments = $client->payments()->get();
         $messagess = $client->messagess()->get()->sortByDesc('created_at');
+        $users = User::select('id', 'name')->get();
 
         $tasks = $client->tasks()->orderBy('active', 'asc')->orderBy('time', 'desc')->get();
         $allTime = 0;
@@ -60,6 +65,7 @@ class CrmController extends Controller
             'fileSizes' => $fileSizes,
             'clientPrice' => $clientPrice,
             'allTime' => $allTime,
+            'allUsers' => $users,
         ];
 
         if (count($access)) {
@@ -142,10 +148,64 @@ class CrmController extends Controller
 
     public function remove(CrmClient $client)
     {
+        $user = Auth::user();
+        if (!$user->sudo) {
+            return redirect()->route('CrmPage', $client->id);
+        }
         if ($client->delete()) {
             return redirect()->route('crm');
         }
         return redirect()->route('CrmPage', $client->id);
+    }
+
+    public function actions(CrmClient $client, Request $request)
+    {
+        $user = Auth::user();
+        $actions = $request->action;
+        if (!$actions) {
+            return $this->error('Не задано действие');
+        }
+        if (!$user->sudo) {
+            return $this->error('Вы не имеете прав для этого действия');
+        }
+
+        switch ($actions) {
+            case 'switchactive':
+                $newActive = $client->active;
+                if ($newActive == 1) {
+                    $newActive = false;
+                    $client->update([
+                        'active' => $newActive
+                    ]);
+                } else {
+                    $newActive = true;
+                    $client->update([
+                        'active' => $newActive,
+                        'start' => date('Y-m-d'),
+                    ]);
+                }
+
+                return $this->success('Успешно!');
+                break;
+            case 'deadline':
+                if (!$date = $request->date) {
+                    return $this->error('Не задана дата дедлайна');
+                }
+                $client->update([
+                    'dead' => $request->date,
+                ]);
+                return $this->success('Дата дедлайна успешно установлена!');
+                break;
+            case 'user_chargeable':
+                if (!$user_id = $request->user_id) {
+                    return $this->error('Не задан пользователь');
+                }
+                $client->update([
+                    'chargeable_user' => $user_id,
+                ]);
+                return $this->success('Ответственный успешно задан');
+                break;
+        }
     }
 
 

@@ -52,6 +52,10 @@ if (!function_exists('formatSize')) {
 
     function dateFormat($date)
     {
-        return date('d.m.y H:i	', strtotime($date));
+        return date('d.m.y H:i', strtotime($date));
+    }
+    function dateFormatNotTime($date)
+    {
+        return date('d.m.y', strtotime($date));
     }
 }

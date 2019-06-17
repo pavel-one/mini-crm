@@ -1,5 +1,5 @@
 @php
- $user = Auth::user();
+    $user = Auth::user();
 @endphp
 <div class="col-xs-12 col-md-6">
     <div class="card">
@@ -59,6 +59,35 @@
                                     </span>
                                         </td>
                                     </tr>
+                                    @if ($client->start)
+                                        <tr>
+                                            <td>Страт разработки</td>
+                                            <td>
+                                                {{dateFormatNotTime($client->start)}}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if ($client->dead)
+                                        <tr>
+                                            <td>Дата дедлайна</td>
+                                            <td>
+                                                {{dateFormatNotTime($client->dead)}}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if ($client->chargeable_user)
+                                        @php
+                                            $chargeableUser = $client->getChargeable()->first();
+                                        @endphp
+                                        <tr>
+                                            <td>Ответственный за проект</td>
+                                            <td>
+                                                <a href="{{ route('ProfilePage', $chargeableUser->nick) }}">
+                                                    {{ $chargeableUser->name }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -130,16 +159,19 @@
                             <i class="fas fa-trash"></i> Удалить клиента
                         </button>
                     </form>
-                    <div class="client-actions">
-                        <div class="btn btn-primary">
-                            Установить дату дедлайна
+                    <div class="client-actions" data-url="{{ route('ClientActions', $client->id) }}">
+                        <div class="btn btn-primary" id="death-line-date">
+                            Настроить дату дедлайна
+                        </div>
+                        <div class="btn btn-dark" id="user_chargeable">
+                            Установить ответственного
                         </div>
                         @if ($client->active)
-                            <div class="btn btn-danger">
+                            <div class="btn btn-danger" data-action="switchactive">
                                 Снять с разработки
                             </div>
                         @else
-                            <div class="btn btn-success">
+                            <div class="btn btn-success" data-action="switchactive">
                                 Установить на разработку
                             </div>
                         @endif
@@ -167,4 +199,23 @@
             </div>
         </form>
     </div>
+</div>
+<div style="display: none" class="modal-all" id="modal-date">
+    <h2>Установить дату дедлайна</h2>
+    <input type="date" name="dead" value="{{ $client->dead }}">
+</div>
+
+<div style="display: none" class="modal-all" id="chargeable-change">
+    <h2>Установить ответственного</h2>
+    <select name="chargeable">
+        @foreach ($allUsers as $user)
+            <option
+                    @if ($user->id == $client->chargeable_user)
+                    selected="selected"
+                    @endif
+                    value="{{$user->id}}">
+                {{$user->name}}
+            </option>
+        @endforeach
+    </select>
 </div>

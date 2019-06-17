@@ -19,6 +19,9 @@ class CrmClients extends Migration
             $table->integer('price')->default(0);
             $table->string('name');
             $table->string('url');
+            $table->integer('chargeable_user')->nullable();
+            $table->date('start')->nullable();
+            $table->date('dead')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('time')->nullable();

@@ -6,7 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class CrmClient extends Model
 {
-    public $fillable = ['name', 'url', 'phone', 'email', 'description', 'full_description'];
+    public $fillable = [
+        'name',
+        'active',
+        'dead',
+        'start',
+        'chargeable_user',
+        'url',
+        'phone',
+        'email',
+        'description',
+        'full_description'
+    ];
 
     public function delete()
     {
@@ -44,5 +55,10 @@ class CrmClient extends Model
     public function messagess()
     {
         return $this->hasMany('App\ClientChat', 'client_id', 'id');
+    }
+
+    public function getChargeable()
+    {
+        return $this->hasOne('App\User', 'id', 'chargeable_user');
     }
 }
