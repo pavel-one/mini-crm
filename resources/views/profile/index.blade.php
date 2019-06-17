@@ -66,7 +66,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 vk-chat">
+    <div class="col-md-12 vk-chat">
         <div class="card">
             <div class="card-header card-header-primary">
                 <h4 class="card-title">Мои сообщения</h4>
@@ -96,7 +96,7 @@
                         @endforeach
                     @endif
                 </div>
-                <div class="reload-chat" style="width: 494px" id="load-lk-chat">
+                <div class="reload-chat" style="width: 869px" id="load-lk-chat">
 
                 </div>
             </div>
