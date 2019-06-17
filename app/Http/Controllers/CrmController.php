@@ -22,7 +22,7 @@ class CrmController extends Controller
     public function index()
     {
         $list = CrmClient::orderBy('active', 'desc')->get();
-        return view('crm.list', ['pagetitle' => 'Список клиентов', 'clients' => $list]);
+        return view('crm.list', ['pagetitle' => 'Список клиентов', 'clients' => $list, 'user' => Auth::user()]);
     }
 
     public function ClientPage(CrmClient $client)

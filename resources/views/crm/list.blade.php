@@ -2,14 +2,17 @@
 
 @section('content')
     <div class="row">
-        <div class="col-xs-12 col-md-3">
-            <div class="card cart-create">
-                {{--<img src="..." class="card-img-top" alt="...">--}}
-                <div class="card-body">
-                    <div class="icon"><i class="fas fa-plus"></i></div>
+        @if ($user->sudo)
+            <div class="col-xs-12 col-md-3">
+                <div class="card cart-create">
+                    {{--<img src="..." class="card-img-top" alt="...">--}}
+                    <div class="card-body">
+                        <div class="icon"><i class="fas fa-plus"></i></div>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
+
         @if (count($clients) > 0)
             @foreach($clients as $client)
                 <div class="col-xs-12 col-md-3">
@@ -48,7 +51,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="name">Имя</label>
-                        <input type="text" required class="form-control" name="name" id="name" aria-describedby="emailHelp" placeholder="">
+                        <input type="text" required class="form-control" name="name" id="name"
+                               aria-describedby="emailHelp" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="url">Url</label>
@@ -60,11 +64,12 @@
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="">
+                        <input type="text" class="form-control" name="email" id="email" aria-describedby="emailHelp"
+                               placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="description">Краткое описание</label>
-                        <input class="form-control" name="description" id="description" />
+                        <input class="form-control" name="description" id="description"/>
                     </div>
 
                 </div>

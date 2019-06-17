@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
@@ -22,12 +23,22 @@ class UsersController extends Controller
 
     public function remove(User $user)
     {
+        $currentUser = Auth::user();
+        if (!$currentUser->sudo) {
+            return $this->error('Вы не администратор!');
+        }
+
         $user->delete();
         return $this->success('Успешно удален');
     }
 
     public function create(Request $request)
     {
+        $currentUser = Auth::user();
+        if (!$currentUser->sudo) {
+            return $this->error('Вы не администратор!');
+        }
+
         $pass = $request->password;
         $request->request->set('password', bcrypt($pass));
         $request->request->set('sudo', 0);
