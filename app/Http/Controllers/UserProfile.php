@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\UserMessage;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -118,21 +119,6 @@ class UserProfile extends Controller
      */
     public function newMessage(Request $request, $topic_id)
     {
-        $paths = null;
-        if ($files = $request->allFiles()) {
-            $paths = [];
-            /** @var UploadedFile $file */
-            foreach ($files['files'] as $file) {
-                $name = $file->getClientOriginalName();
-                $type = $file->getMimeType();
-                $paths[] = [
-                    'name' => $name,
-                    'file' => $file->storeAs('messages/' . $this->user->nick, $name, ['disk' => 'public']),
-                    'mime' => $type,
-                    'disk' => 'public',
-                ];
-            }
-        }
         /** @var UserMessage $toUser */
         $toUser = Auth::user();
         /** @var UserMessage $topic */
@@ -142,6 +128,22 @@ class UserProfile extends Controller
         }
         /** @var User $fromUser */
         $fromUser = $topic->fromUser()->firstOrFail();
+
+        $paths = null;
+        if ($files = $request->allFiles()) {
+            $paths = [];
+            /** @var UploadedFile $file */
+            foreach ($files['files'] as $file) {
+                $name = $file->getClientOriginalName();
+                $type = $file->getMimeType();
+                $paths[] = [
+                    'name' => $name,
+                    'file' => $file->storeAs('messages/' . $fromUser->nick, $name, ['disk' => 'public']),
+                    'mime' => $type,
+                    'disk' => 'public',
+                ];
+            }
+        }
 
         return $fromUser->sendMessage($request->message, $paths);
     }
@@ -243,12 +245,18 @@ class UserProfile extends Controller
     /**
      * Скачивание файла прикрепленного к сообщению
      * @param $filename
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function msgDownloadFile($filename)
     {
         $name = 'messages/' . $this->user->nick . '/' . $filename;
         $path = diskFilePath('public', $name);
+        $mime = mime_content_type($path);
+        if (strripos($mime, 'image') !== FALSE) {
+            $image = Storage::disk('public')->get($name);
+            return response($image)->header('Content-Type', $mime);
+        }
         return response()->download($path);
     }
 
