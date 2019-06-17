@@ -161,8 +161,8 @@ return [
         'webdav' => [
             'driver'     => 'webdav',
             'baseUri'    => 'https://webdav.yandex.ru',
-            'userName'   => 'pavel@orendat.ru',
-            'password'   => 'webtipira21',
+            'userName'   => '',
+            'password'   => '',
             // 'visibility' => 'public',
 //             'pirate'     => true,
             // 'eventable'  => true,

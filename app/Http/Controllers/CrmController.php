@@ -148,6 +148,14 @@ class CrmController extends Controller
 
     public function update(CrmClient $client, Request $request)
     {
+        $user = Auth::user();
+        if (!$user->sudo) {
+            return [
+                'success' => false,
+                'msg' => 'У вас не хватает прав',
+            ];
+        }
+
         $client->update($request->toArray());
 
         return [

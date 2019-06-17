@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'PAVEL ONE CRM'),
+    'name' => env('APP_NAME', 'SK GROUPS CRM'),
 
     /*
     |--------------------------------------------------------------------------

@@ -20,6 +20,7 @@ class TaskController extends Controller
             return ['success' => false, 'msg' => 'Нет задачи'];
         }
         $text = preg_replace('(http://[\w+?\.\w+]+[a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\:\;\'\.\/]+[\.]*[a-zA-Z0-9\/]+)', "<a href='$0' target='_blank'>[ссылка]</a>", $text);
+        $text = preg_replace('(https://[\w+?\.\w+]+[a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\:\;\'\.\/]+[\.]*[a-zA-Z0-9\/]+)', "<a href='$0' target='_blank'>[ссылка]</a>", $text);
 
         $request->user()->tasks()->create([
             'text' => $text,

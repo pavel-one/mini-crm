@@ -1,9 +1,9 @@
 RewriteEngine on
 
 RewriteCond %{SERVER_PORT} !^443
-RewriteRule (.*) https://lara.cms.pavel.one/$1 [R=301,L]
+RewriteRule (.*) https://admin.project.skgroups.ru/$1 [R=301,L]
 
-RewriteCond %{HTTP_HOST} ^lara.cms.pavel.one$ [NC,OR]
-RewriteCond %{HTTP_HOST} ^lara.cms.pavel.one$
+RewriteCond %{HTTP_HOST} ^admin.project.skgroups.ru$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^admin.project.skgroups.ru$
 RewriteCond %{REQUEST_URI} !public/
 RewriteRule (.*) /public/$1 [L]
