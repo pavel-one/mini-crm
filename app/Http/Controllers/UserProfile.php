@@ -252,6 +252,11 @@ class UserProfile extends Controller
         return response()->download($path);
     }
 
+    public function getcount()
+    {
+        return $this->user->unreadMessages()->count();
+    }
+
     public function error($msg)
     {
         return response()->json(['success' => false, 'msg' => $msg]);

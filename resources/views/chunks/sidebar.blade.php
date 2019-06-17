@@ -19,7 +19,9 @@
                 {{ $auth->name }}
             </div>
             <a href="{{ route('Profile') }}" style="display: block;max-width: 70%;margin: 10px auto;"
-               class="btn btn-default">
+               class="btn btn-default"
+               data-counturl="{{ route('checkNew') }}"
+            >
                 Мой профиль
                 @if ($countMessages)
                     <span>({{$countMessages}})</span>

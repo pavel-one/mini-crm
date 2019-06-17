@@ -59,6 +59,7 @@ Route::get('/profile', 'UserProfile@index')->name('Profile');
 Route::post('/profile', 'UserProfile@update');
 
 Route::get('/profile/test', 'UserProfile@test');
+Route::get('/profile/getcount', 'UserProfile@getcount')->name('checkNew');
 Route::get('/profile/messages/{topic_id}', 'UserProfile@getMessages')->name('LoadTopic');
 Route::post('/profile/messages/{topic_id}', 'UserProfile@newMessage')->name('NewMessageLk');
 Route::get('/profile/messages/download/{filename}', 'UserProfile@msgDownloadFile')->name('msgDownload');

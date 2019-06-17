@@ -161,6 +161,10 @@ function Crm() {
         self.updateChat();
     }, 1500);
 
+    setInterval(function () {
+        self.getCountMessage();
+    }, 30000);
+
     function _FakeFile() {
         $(this).parent().find('[type=file]').click();
     }
@@ -186,6 +190,23 @@ function Crm() {
         if (bytes == 0) return '0 Byte';
         let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
         return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    };
+
+    this.getCountMessage = function () {
+        let $btn = $('.sidebar-wrapper .user .btn');
+        let url = $btn.data('counturl');
+        $.ajax({
+            url: url,
+            success: function (resp) {
+                $btn.text('Мой профиль ('+resp+')');
+                if (resp > 0) {
+                    let audio = new Audio();
+                    audio.preload = 'auto';
+                    audio.src = 'icq.mp3';
+                    audio.play();
+                }
+            }
+        })
     };
 
     function _loadTopicMessages() {
