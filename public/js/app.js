@@ -126,6 +126,9 @@ function Crm() {
 
     $(document).on('click', '.topic-container .topic', _loadTopicMessages);
 
+    $(document).on('click', '.chat-footer .icon-attach', _FakeFile);
+    $(document).on('change', '.chat-footer [type=file]', _ChangeFile);
+
     $('.message-popup form').submit(function () {
         let url = $('#msg_btn').data('url');
         let th = $(this);
@@ -158,6 +161,33 @@ function Crm() {
         self.updateChat();
     }, 1500);
 
+    function _FakeFile() {
+        $(this).parent().find('[type=file]').click();
+    }
+
+    function _ChangeFile() {
+        let countFiles = this.files.length;
+        console.log(this.files);
+        self.msg({
+            success: true,
+            msg: 'Вы выбрали ' + countFiles + ' файлов'
+        });
+        $('.chat-footer .dsc').html('<ol></ol>');
+        let files = this.files;
+        for (key in files) {
+            if (typeof files[key] == 'object') {
+                $('.chat-footer .dsc ol').append('<li>' + files[key].name + ' (' + self.byteToSize(files[key].size) + ')</li>');
+            }
+        }
+    }
+
+    this.byteToSize = function (bytes) {
+        let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        if (bytes == 0) return '0 Byte';
+        let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    };
+
     function _loadTopicMessages() {
         $('.topic').removeClass('active');
         let $th = $(this);
@@ -177,13 +207,15 @@ function Crm() {
 
     function _createMessage() {
         let th = $(this);
-        let data = th.serialize();
         let url = th.attr('action');
+        let data = new FormData(th.get(0));
         th.loader(true);
         $.ajax({
             url: url,
             dataType: 'json',
             data: data,
+            contentType: false,
+            processData: false,
             method: 'POST',
             error: function () {
                 let resp = {
@@ -199,6 +231,8 @@ function Crm() {
                     success: true,
                     msg: 'Успшено отправлено'
                 };
+
+                $('.chat-footer .dsc').html('');
                 th.trigger('reset');
                 self.msg(resp);
                 self.updateChat();
@@ -262,7 +296,7 @@ function Crm() {
             success: function (response) {
                 let count = response;
                 // $block.loader(false);
-                $block.find('.dsc').text(count+' непрочитанных');
+                $block.find('.dsc').text(count + ' непрочитанных');
             }
         })
     };

@@ -74,11 +74,17 @@
     <form method="post"
           action="{{ route('NewMessageLk', $topic->id) }}"
           data-get="{{ route('LoadTopic', $topic->id) }}"
+          enctype="multipart/form-data"
           data-lk="true">
         @csrf
         <input type="text" autocomplete="off" name="message" placeholder="Введите сообщение">
+        <input type="file" multiple="multiple" name="files[]" placeholder="Прикрепить к сообщению" style="display: none">
+        <div class="icon-attach">
+            <i class="fas fa-paperclip"></i>
+        </div>
         <button type="submit">
             <i class="fas fa-paper-plane"></i>
         </button>
     </form>
+    <div class="dsc"></div>
 </div>

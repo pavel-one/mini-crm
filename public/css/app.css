@@ -473,3 +473,14 @@ pre.ql-syntax {
     padding-left: 20px;
     margin: 0;
 }
+.chat-footer form {
+    position: relative;
+}
+.chat-footer .icon-attach {
+    position: absolute;
+    right: 9%;
+    top: 29%;
+    color: #9c27b0;
+    cursor: pointer;
+    font-size: 1.3em;
+}

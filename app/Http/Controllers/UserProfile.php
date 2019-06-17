@@ -118,6 +118,21 @@ class UserProfile extends Controller
      */
     public function newMessage(Request $request, $topic_id)
     {
+        $paths = null;
+        if ($files = $request->allFiles()) {
+            $paths = [];
+            /** @var UploadedFile $file */
+            foreach ($files['files'] as $file) {
+                $name = $file->getClientOriginalName();
+                $type = $file->getMimeType();
+                $paths[] = [
+                    'name' => $name,
+                    'file' => $file->storeAs('messages/' . $this->user->nick, $name, ['disk' => 'public']),
+                    'mime' => $type,
+                    'disk' => 'public',
+                ];
+            }
+        }
         /** @var UserMessage $toUser */
         $toUser = Auth::user();
         /** @var UserMessage $topic */
@@ -128,7 +143,7 @@ class UserProfile extends Controller
         /** @var User $fromUser */
         $fromUser = $topic->fromUser()->firstOrFail();
 
-        return $fromUser->sendMessage($request->message);
+        return $fromUser->sendMessage($request->message, $paths);
     }
 
     /**
