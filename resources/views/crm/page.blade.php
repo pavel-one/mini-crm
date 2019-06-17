@@ -13,7 +13,9 @@
     </div>
     <div class="row">
         @include('crm.chunk.files')
-        @include('crm.chunk.payments')
+        @if ($user->sudo)
+            @include('crm.chunk.payments')
+        @endif
     </div>
 
 

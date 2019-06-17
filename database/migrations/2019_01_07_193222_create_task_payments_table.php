@@ -17,6 +17,7 @@ class CreateTaskPaymentsTable extends Migration
             $table->increments('id');
             $table->boolean('active')->default(0)->index();
             $table->string('name');
+            $table->dateTime('pay_date')->nullable();
             $table->integer('price');
             $table->integer('client_id');
             $table->timestamps();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CrmClient;
 use App\TaskPayment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -34,11 +35,18 @@ class PaymentController extends Controller
 
     public function update(Request $request, CrmClient $client, TaskPayment $payment)
     {
+        $user = Auth::user();
+        if (!$user->sudo) {
+            return $this->error('Вы не админ!');
+        }
         $action = $request->action;
 
         switch ($action) {
             case 'success':
-                $payment->update(['active' => 1]);
+                $payment->update([
+                    'active' => 1,
+                    'pay_date' => date('Y-m-d  H:i')
+                ]);
                 return $this->success('Оплата успешно обновлена');
                 break;
             case 'remove':
@@ -46,7 +54,10 @@ class PaymentController extends Controller
                 return $this->success('Оплата успешно обновлена');
                 break;
             case 'refresh':
-                $payment->update(['active' => 0]);
+                $payment->update([
+                    'active' => 0,
+                    'pay_date' => null
+                ]);
                 return $this->success('Оплата успешно отменена');
                 break;
         }

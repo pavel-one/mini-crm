@@ -219,6 +219,9 @@ function Crm() {
         if (!action) {
             action = $(this).data('action');
         }
+        if (typeof action == 'object') {
+            action = $(this).data('action');
+        }
         if (!data) {
             data = {
                 action: action

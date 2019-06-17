@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class TaskPayment extends Model
 {
     protected $table = 'task_payments';
-    protected $fillable = ['name', 'price', 'active'];
+    protected $fillable = ['name', 'price', 'pay_date', 'active'];
 
     public function client()
     {
-        return $this->belongsTo('App\CrmClient', 'id', 'client_id');
+        return $this->belongsTo('App\CrmClient');
     }
 }

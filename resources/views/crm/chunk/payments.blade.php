@@ -21,6 +21,9 @@
                             Цена
                         </th>
                         <th>
+                            Дата оплаты
+                        </th>
+                        <th>
                             Действия
                         </th>
                     </tr>
@@ -31,6 +34,11 @@
                             <tr class="{{ $item->active ? 'success' : '' }}">
                                 <td>{{ $item->name }}</td>
                                 <td>{{ price_format($item->price) }}р.</td>
+                                <td>
+                                    @if ($item->pay_date)
+                                        {{ dateFormat($item->pay_date) }}
+                                    @endif
+                                </td>
                                 <td class="task-actions"
                                     data-url="{{ route('PaymentUpdate', [$client->id, $item->id]) }}">
                                     @if($item->active === 0)

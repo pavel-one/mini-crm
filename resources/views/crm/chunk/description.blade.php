@@ -1,6 +1,3 @@
-@php
-    $user = Auth::user();
-@endphp
 <div class="col-xs-12 col-md-6">
     <div class="card">
         <div class="card-header card-header-primary">
@@ -38,6 +35,12 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <tr>
+                                        <td>Дата создания клиента:</td>
+                                        <td>
+                                            {{dateFormat($client->created_at)}}
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td>Телефон:</td>
                                         <td>
@@ -208,6 +211,7 @@
 <div style="display: none" class="modal-all" id="chargeable-change">
     <h2>Установить ответственного</h2>
     <select name="chargeable">
+        <option value=""></option>
         @foreach ($allUsers as $user)
             <option
                     @if ($user->id == $client->chargeable_user)

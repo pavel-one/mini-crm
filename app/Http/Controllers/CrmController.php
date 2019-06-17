@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Image;
+use NikitaKiselev\SendPulse\SendPulse;
 
 class CrmController extends Controller
 {
@@ -67,6 +68,7 @@ class CrmController extends Controller
             'clientPrice' => $clientPrice,
             'allTime' => $allTime,
             'allUsers' => $users,
+            'user' => Auth::user()
         ];
 
         if (count($access)) {
@@ -93,6 +95,14 @@ class CrmController extends Controller
     public function store(Request $request)
     {
         $client = CrmClient::create($request->all());
+        $dataPush = [
+            'title' => 'У нас новый проект!',
+            'website_id' => 44319,
+            'body' => $client->name,
+            'link' => route('CrmPage', $client->id),
+            'ttl' => 10,
+        ];
+        SendPulse::createPushTask($dataPush);
         return redirect()->route('CrmPage', $client->id);
     }
 
@@ -209,7 +219,7 @@ class CrmController extends Controller
                     ['client' => $client->toArray(), 'user' => $user->toArray()],
                     function ($m) use ($user) {
                         $m->to($user->email, 'CRM SK')->subject('Ты ответственный!');
-                });
+                    });
                 return $this->success('Ответственный успешно задан');
                 break;
         }
