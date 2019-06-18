@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CrmClient;
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -35,11 +36,13 @@ class TaskController extends Controller
         $action = $request->action;
         $time_tmp = $task->time_tmp;
         $time = $task->time;
+        $currentUser = Auth::user();
 
         switch ($action) {
             case 'start':
                 $task->update([
                     'time_tmp' => $time_tmp + 1,
+                    'user_tmp' => $currentUser->id,
                 ]);
 
                 return response()->json([
@@ -53,7 +56,8 @@ class TaskController extends Controller
                 }
                 $task->update([
                     'time' => $time + $time_tmp,
-                    'time_tmp' => 0
+                    'time_tmp' => 0,
+                    'user_tmp' => null,
                 ]);
                 return $this->success('Таймер остановлен, время обновлено');
                 break;

@@ -17,6 +17,8 @@ class Tasks extends Migration
             $table->increments('id');
             $table->text('text');
             $table->integer('time');
+            $table->integer('user_active')->nullable();
+            $table->integer('user_tmp')->nullable();
             $table->integer('time_tmp');
             $table->integer('client_id')->index();
             $table->integer('user_id')->unsigned()->index();

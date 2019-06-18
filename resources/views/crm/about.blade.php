@@ -36,7 +36,7 @@
                             @if($payments)
                                 @foreach($payments as $item)
                                     @php
-                                    $client = $item->client()->get()->first()
+                                        $client = $item->client()->get()->first()
                                     @endphp
                                     <tr class="{{ $item->active ? 'success' : '' }}">
                                         <td>{{ $item->name }}</td>
@@ -69,7 +69,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-md-7">
-            <div class="card">
+            <div class="card reload_works">
                 <div class="card-header card-header-primary card-header-icon">
                     <div class="card-icon">
                         <i class="fas fa-network-wired"></i>
@@ -95,6 +95,9 @@
                                 <th>
                                     Проект
                                 </th>
+                                <th>
+                                    Работает
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -112,6 +115,16 @@
                                                 {{$client->name}}
                                             </a>
                                         </td>
+                                        @if ($task->user_tmp)
+                                            @php
+                                                $tmpUser = $task->userTmp()->first();
+                                            @endphp
+                                            <td>
+                                                <a target="_blank" href="{{ route('ProfilePage', $tmpUser->nick) }}">
+                                                    {{$tmpUser->name}}
+                                                </a>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             @endif
@@ -123,4 +136,11 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function () {
+            setInterval(function () {
+                $('.reload_works').reloadObj();
+            }, 2000);
+        })
+    </script>
 @endsection
