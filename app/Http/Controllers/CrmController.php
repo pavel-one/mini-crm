@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\CrmClient;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Image;
 use NikitaKiselev\SendPulse\SendPulse;
 
@@ -22,7 +24,104 @@ class CrmController extends Controller
     public function index()
     {
         $list = CrmClient::orderBy('active', 'desc')->get();
-        return view('crm.list', ['pagetitle' => 'Список клиентов', 'clients' => $list, 'user' => Auth::user()]);
+        return view('crm.list', [
+            'pagetitle' => 'Список клиентов',
+            'clients' => $list,
+            'user' => Auth::user()
+        ]);
+    }
+
+    public function UpdatePhoto(CrmClient $client, Request $request)
+    {
+        /** @var UploadedFile $photo */
+        $photo = $request->allFiles()[0];
+        if (!$photo) {
+            $this->error('Нет фото');
+        }
+        $name = $photo->getClientOriginalName();
+        $name = str_replace(' ', '_', $name);
+
+        $path = $photo->storeAs(
+            'client_photo/' . $client->id,
+            $name,
+            ['disk' => 'public']
+        );
+        $fullPath = diskFilePath('public', $path);
+        $photo = Image::make($fullPath)->fit(750, 300, function ($img) {
+            $img->upsize();
+        });
+        $photo->save($fullPath);
+        $client->update([
+            'photo' => $path
+        ]);
+        return $this->success('Успешно загружено');
+    }
+
+    public function UpdateFiles(CrmClient $client, Request $request)
+    {
+        $files = $request->allFiles();
+        $old_files_data = $client->files;
+        if ($old_files_data) {
+            $old_files_data = json_decode($old_files_data, true);
+        }
+
+        if (!$files) {
+            return $this->error('Не загружены файлы');
+        }
+        /** @var UploadedFile $file */
+        foreach ($files as $file) {
+            $name = $file->getClientOriginalName();
+            $name = str_replace(' ', '_', $name);
+            $path = $file->storeAs(
+                'files_admin/' . $client->id,
+                $name,
+                ['disk' => 'public']
+            );
+            $old_files_data[] = [
+                'size' => formatSize($file->getSize()),
+                'name' => $name,
+                'path' => $path
+            ];
+        }
+        $client->update([
+            'files' => json_encode($old_files_data)
+        ]);
+        return $this->success('Успешно загружено');
+    }
+
+    function DownloadFile(CrmClient $client, $filename)
+    {
+        $files = $client->files;
+        if (!$files) {
+            return response('Нет файлов у клиента что вы вообще пытаетесь сделать?!?!?!');
+        }
+        $files = json_decode($files, true);
+        foreach ($files as $file) {
+            if ($file['name'] == $filename) {
+                return response()->download(diskFilePath('public', $file['path']));
+            }
+        }
+        return response('Странно, но я не нашел файл с таким именем');
+    }
+
+    function RemoveFile(CrmClient $client, $filename)
+    {
+        $files = $client->files;
+        if (!$files) {
+            return $this->error('Нет файлов у клиента что вы вообще пытаетесь сделать?!?!?!');
+        }
+        $files = json_decode($files, true);
+        foreach ($files as $key => $file) {
+            if ($file['name'] == $filename) {
+                Storage::disk('public')->delete($file['path']);
+                unset($files[$key]);
+                $client->update([
+                    'files' => json_encode($files)
+                ]);
+                return $this->success('Файл успешно удален');
+            }
+        }
+        return $this->error('Странно, но я не нашел файл с таким именем');
     }
 
     public function ClientPage(CrmClient $client)

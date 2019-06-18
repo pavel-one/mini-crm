@@ -5,7 +5,7 @@
         @if ($user->sudo)
             <div class="col-xs-12 col-md-3">
                 <div class="card cart-create">
-                    {{--<img src="..." class="card-img-top" alt="...">--}}
+                    {{--                    <img src="..." class="card-img-top" alt="...">--}}
                     <div class="card-body">
                         <div class="icon"><i class="fas fa-plus"></i></div>
                     </div>
@@ -15,21 +15,31 @@
 
         @if (count($clients) > 0)
             @foreach($clients as $client)
-                <div class="col-xs-12 col-md-3">
+                <div class="col-xs-12 col-md-3 listing-clients">
                     <div class="card">
-                        {{--<img src="..." class="card-img-top" alt="...">--}}
+                        @if ($client->photo)
+                            <div class="over">
+                                <img src="{{asset('storage/'. $client->photo)}}" alt="">
+                            </div>
+                        @endif
                         <div class="card-body">
                             <h5 class="card-title">
                                 {{ $client->name }}
+                                <span class="link">
+                                    <a target="_blank" href="{{ $client->url }}">({{ $client->url }})</a>
+                                </span>
                                 @if ($client->active)
                                     <span class="badge badge-primary">В разработке</span>
                                 @endif
                             </h5>
+                            <div class="card-info">
+
+                            </div>
                             <p class="card-text">
                                 {{ $client->description }}
                             </p>
                             <a href="{{ route('CrmPage', $client->id) }}" class="btn btn-primary">Подробнее</a>
-                            <a href="{{ route('CrmPage', $client->id) }}" class="btn btn-secondary">В проект</a>
+                            {{--                            <a href="{{ route('CrmPage', $client->id) }}" class="btn btn-secondary">В проект</a>--}}
                         </div>
                     </div>
                 </div>

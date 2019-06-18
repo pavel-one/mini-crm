@@ -133,6 +133,13 @@ function Crm() {
     $(document).on('click', '#death-line-date', _DeathLineDate);
     $(document).on('click', '#user_chargeable', _ChargeableChange);
 
+    $(document).on('click', '#set-photo-client', _ClientSetPhoto);
+    $(document).on('change', '#set-photo-input', _UploadClientPhoto);
+
+    $(document).on('click', '#set-files-client', _ClientSetFiles);
+    $(document).on('change', '#set-files-input', _UploadClientFiles);
+
+
     $('.message-popup form').submit(function () {
         let url = $('#msg_btn').data('url');
         let th = $(this);
@@ -161,17 +168,167 @@ function Crm() {
             let val = $(this).val();
             let $btn = $('#death-line-date');
             $.fancybox.close();
-            $btn.text('Дата дедлайна: '+val+'?');
+            $btn.text('Дата дедлайна: ' + val + '?');
             $btn.removeClass('btn-primary').addClass('btn-success');
             $btn.data('action', 'deadline').data('date', val);
         }
     });
+
+    this.setBgItems = function (cls) {
+        let $items = $(cls);
+        setTimeout(function () {
+            $items.each(function (i, item) {
+                let $item = $(item);
+                let $image = $item.find('img');
+                if ($image.length) {
+                    let rgb = self.getAverageRGB($image[0]);
+                    let rgbaStr = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',0)';
+                    let rgbaStr2 = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',1)';
+                    $item.find('.card-body')
+                        .css('background', 'linear-gradient(to bottom, ' + rgbaStr + ' -100%, ' + rgbaStr2 + ' 90%)');
+
+                    let hsl = self.rgb2hsl(rgb.r, rgb.g, rgb.b);
+
+                    if (hsl.l >= 132) {
+                        $item.addClass('white');
+                    } else {
+                        $item.addClass('black')
+                    }
+                }
+            });
+        }, 500);
+    };
+
+    this.rgb2hsl = function (r, g, b) {
+        let max = Math.max(r, g, b);
+        let min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max == min) {
+            h = s = 0;
+        } else {
+            let d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r:
+                    h = (g - b) / d + (g < b ? 6 : 0);
+                    break;
+                case g:
+                    h = (b - r) / d + 2;
+                    break;
+                case b:
+                    h = (r - g) / d + 4;
+                    break;
+            }
+            h /= 6;
+        }
+        return {h: h, s: s, l: l};
+    };
+
+    this.getAverageRGB = function (imgEl) {
+        let blockSize = 5,
+            defaultRGB = {r: 0, g: 0, b: 0},
+            canvas = document.createElement('canvas'),
+            context = canvas.getContext && canvas.getContext('2d'),
+            data, width, height,
+            i = -4,
+            length,
+            rgb = {r: 0, g: 0, b: 0},
+            count = 0;
+        if (!context) {
+            return defaultRGB;
+        }
+        height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
+        width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
+        context.drawImage(imgEl, 0, 0);
+        try {
+            data = context.getImageData(0, 0, width, height);
+        } catch (e) {
+            return defaultRGB;
+        }
+        length = data.data.length;
+        while ((i += blockSize * 4) < length) {
+            ++count;
+            rgb.r += data.data[i];
+            rgb.g += data.data[i + 1];
+            rgb.b += data.data[i + 2];
+        }
+        rgb.r = ~~(rgb.r / count);
+        rgb.g = ~~(rgb.g / count);
+        rgb.b = ~~(rgb.b / count);
+        return rgb;
+    };
+
+    self.setBgItems('.listing-clients .card');
+
+    function _ClientSetPhoto() {
+        let $input = $(this).parent().find('#set-photo-input');
+        $input.click();
+    }
+
+    function _UploadClientPhoto() {
+        let files = this.files;
+        let data = new FormData();
+        $.each(files, function (key, value) {
+            data.append(key, value);
+        });
+        let url = $(this).data('url');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            data: data,
+            success: function (respond) {
+                console.log(respond);
+                self.msg(respond);
+            },
+            error: function (respond) {
+                console.log(respond);
+            }
+        });
+    }
+
+    function _ClientSetFiles() {
+        let $input = $(this).parent().find('#set-files-input');
+        $input.click();
+    }
+
+    function _UploadClientFiles() {
+        let files = this.files;
+        let data = new FormData();
+        $.each(files, function (key, value) {
+            data.append(key, value);
+        });
+        let url = $(this).data('url');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            data: data,
+            success: function (respond) {
+                if (respond.success) {
+                    $('.card-body').reloadObj();
+                }
+                self.msg(respond);
+            },
+            error: function (respond) {
+                console.log(respond);
+            }
+        });
+    }
+
     function _ChargeableChange() {
 
         $.fancybox.open({
             src: '#chargeable-change',
         });
     }
+
     $('#chargeable-change select').change(function () {
         let url = $('.client-actions').data('url');
         let val = $(this).val();
@@ -195,6 +352,7 @@ function Crm() {
             }
         })
     });
+
     function _DeathLineDate() {
         let action = $(this).data('action');
         if (action) {
@@ -212,6 +370,7 @@ function Crm() {
             src: '#modal-date',
         });
     }
+
     function _ClientAction(action, url, data) {
         if (!url) {
             url = $(this).parent().data('url');

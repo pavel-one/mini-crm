@@ -23,6 +23,9 @@ class CrmClients extends Migration
             $table->date('start')->nullable();
             $table->date('dead')->nullable();
             $table->string('phone')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('client_name')->nullable();
+            $table->json('files')->nullable();
             $table->string('email')->nullable();
             $table->string('time')->nullable();
             $table->string('description')->nullable();

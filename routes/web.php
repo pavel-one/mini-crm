@@ -22,8 +22,14 @@ Route::post('/', ['as' => 'crm', 'uses' => 'CrmController@store']);
  * Управление клиентами
  */
 Route::get('/clients/{client}', 'CrmController@ClientPage')->name('CrmPage');
+
+Route::post('/clients/{client}/photoUpdate', 'CrmController@UpdatePhoto')->name('CrmUpdatePhoto');
+Route::post('/clients/{client}/filesUpdate', 'CrmController@UpdateFiles')->name('CrmUpdateFiles');
+Route::get('/clients/{client}/filesDownload/{filename}', 'CrmController@DownloadFile')->name('CrmDownloadFile');
+Route::post('/clients/{client}/filesRemove/{filename}', 'CrmController@RemoveFile')->name('CrmRemoveFile');
 Route::post('/clients/{client}', ['as' => 'CrmPageUpdate', 'uses' => 'CrmController@update']);
 Route::post('/clients/{client}/actions', 'CrmController@actions')->name('ClientActions');
+
 Route::delete('/clients/{client}', 'CrmController@remove')->name('DeleteClient');
 /**
  * Управление достапами

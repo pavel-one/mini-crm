@@ -14,6 +14,9 @@ class CrmClient extends Model
         'chargeable_user',
         'url',
         'phone',
+        'photo',
+        'client_name',
+        'files',
         'email',
         'description',
         'full_description'

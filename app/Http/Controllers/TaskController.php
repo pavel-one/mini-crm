@@ -76,8 +76,11 @@ class TaskController extends Controller
                 return $this->error('Задача удалена');
                 break;
             case 'rename-task':
+                $text = $request->text;
+                $text = preg_replace('(http://[\w+?\.\w+]+[a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\:\;\'\.\/]+[\.]*[a-zA-Z0-9\/]+)', "<a href='$0' target='_blank'>[ссылка]</a>", $text);
+                $text = preg_replace('(https://[\w+?\.\w+]+[a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\:\;\'\.\/]+[\.]*[a-zA-Z0-9\/]+)', "<a href='$0' target='_blank'>[ссылка]</a>", $text);
                 $task->update([
-                    'text' => $request->text,
+                    'text' => $text,
                 ]);
                 return $this->success('Задача изменена');
                 break;

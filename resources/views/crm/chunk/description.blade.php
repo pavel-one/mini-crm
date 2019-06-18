@@ -12,6 +12,11 @@
             </div>
         </div>
         <div class="card-body">
+            @if ($client->photo)
+                <div class="card-image">
+                    <img src="{{ asset('storage/' . $client->photo) }}" alt="">
+                </div>
+            @endif
             <div class="table-responsive">
                 <div class="accordion" id="client-info">
                     <div class="card">
@@ -41,17 +46,27 @@
                                             {{dateFormat($client->created_at)}}
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>Телефон:</td>
-                                        <td>
-                                            <span data-name="phone">{{ $client->phone }}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email:</td>
-                                        <td>
+                                    @if ($user->sudo)
+                                        <tr>
+                                            <td>Телефон:</td>
+                                            <td>
+                                                <span data-name="phone">{{ $client->phone }}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email:</td>
+                                            <td>
                                     <span data-name="email"><a
                                                 href="mailto:{{ $client->email }}">{{ $client->email }}</a></span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    <tr>
+                                        <td>Имя клиента</td>
+                                        <td>
+                                    <span data-name="client_name">
+                                        {{ $client->client_name ?: 'Установить' }}
+                                    </span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -85,7 +100,8 @@
                                         <tr>
                                             <td>Ответственный за проект</td>
                                             <td>
-                                                <a target="_blank" href="{{ route('ProfilePage', $chargeableUser->nick) }}">
+                                                <a target="_blank"
+                                                   href="{{ route('ProfilePage', $chargeableUser->nick) }}">
                                                     {{ $chargeableUser->name }}
                                                 </a>
                                             </td>
@@ -93,6 +109,53 @@
                                     @endif
                                     </tbody>
                                 </table>
+                                @if ($user->sudo)
+                                    @if ($client->files)
+                                        @php
+                                            $fileArr = json_decode($client->files, true);
+                                        @endphp
+                                        <h3>Реквизиты и другие файлы</h3>
+                                        <table class="table">
+                                            <thead class=" text-primary">
+                                            <tr>
+                                                <th>
+                                                    Название
+                                                </th>
+                                                <th>
+                                                    Размер
+                                                </th>
+                                                <th>
+                                                    Действия
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach ($fileArr as $file)
+                                                <tr>
+                                                    <td>
+                                                        {{$file['name']}}
+                                                    </td>
+                                                    <td>{{$file['size']}}</td>
+                                                    <td class="task-actions"
+                                                        data-url="{{
+                                                        route('CrmRemoveFile', [$client->id, $file['name']]) }}">
+                                                        <a class="icon"
+                                                           title="Скачать"
+                                                           href="{{ route('CrmDownloadFile',
+                                                        [$client->id, $file['name']]) }}"
+                                                           target="_blank">
+                                                            <i class="fas fa-download"></i>
+                                                        </a>
+                                                        <div class="icon" data-action="remove" title="Удалить">
+                                                            <i class="fas fa-trash"></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -166,6 +229,20 @@
                         <div class="btn btn-primary" id="death-line-date">
                             Настроить дату дедлайна
                         </div>
+                        <div class="btn btn-primary" id="set-photo-client">
+                            Установить фотографию
+                        </div>
+                        <div class="btn btn-primary" id="set-files-client">
+                            @if ($client->files)
+                                Добавить файлы
+                            @else
+                                Загрузить файлы
+                            @endif
+                        </div>
+                        <input type="file" id="set-photo-input" style="display: none"
+                               data-url="{{ route('CrmUpdatePhoto', $client->id) }}">
+                        <input type="file" multiple="multiple" id="set-files-input" style="display: none"
+                               data-url="{{ route('CrmUpdateFiles', $client->id) }}">
                         <div class="btn btn-dark" id="user_chargeable">
                             Установить ответственного
                         </div>

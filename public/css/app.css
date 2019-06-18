@@ -461,21 +461,26 @@ pre.ql-syntax {
     font-size: .9em;
     font-weight: normal;
 }
+
 .message-text-files {
     background: #f1f1f1;
     padding: 5px 10px;
 }
+
 .message-text-files:before {
     content: 'Прикпреленные файлы:';
     font-weight: bold;
 }
+
 .message-text-files ol {
     padding-left: 20px;
     margin: 0;
 }
+
 .chat-footer form {
     position: relative;
 }
+
 .chat-footer .icon-attach {
     position: absolute;
     right: 9%;
@@ -484,6 +489,7 @@ pre.ql-syntax {
     cursor: pointer;
     font-size: 1.3em;
 }
+
 .modal-all input, .modal-all select {
     width: 100%;
     border: 1px solid #f1f1f1;
@@ -492,9 +498,58 @@ pre.ql-syntax {
     transition: .25s;
     cursor: pointer;
 }
+
 .modal-all select {
     background: #f1f1f1;
 }
+
 .modal-all input:focus, .modal-all select:focus {
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(156, 39, 176, .4);
+}
+
+.card-body .card-image {
+    width: 100%;
+}
+.card-body .card-image img {
+    display: block;
+    width: 100%;
+}
+.listing-clients .card .link {
+    font-size: .75em;
+    color: #eeeeee;
+}
+
+.listing-clients .card .over img {
+    display: block;
+    width: 100%;
+}
+
+.listing-clients .card .card-body {
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.listing-clients .card {
+    position: relative;
+    overflow: hidden;
+}
+
+.listing-clients .card .over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.listing-clients .card.black, .card.black .card-title, .card.black .card-text {
+    color: #ffffff;
+}
+
+.listing-clients .card.black, .card.black .link a {
+    color: #f9f9f9;
+    transition: .25s;
+}
+
+.listing-clients .card.black, .card.black .link a:hover {
+    color: #9c27b0;
 }
