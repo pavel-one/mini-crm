@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
 
 class UsersController extends Controller
 {
@@ -18,7 +19,12 @@ class UsersController extends Controller
     {
         $users = User::all();
         $pagetitle = 'Пользователи';
-        return view('admin.users', compact('users', 'pagetitle'));
+        $data = [
+            'pagetitle' => $pagetitle,
+            'users' => $users,
+            'route' => Route::getFacadeRoot()->current()->getName()
+        ];
+        return view('admin.users', $data);
     }
 
     public function remove(User $user)

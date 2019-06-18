@@ -1,7 +1,8 @@
 <div class="sidebar" data-color="purple" data-background-color="white" data-image="theme/assets/img/sidebar-1.jpg">
     <div class="logo">
         <a href="{{ url('/') }}" class="simple-text logo-normal">
-            Pavel.One CRM
+            SK Groups CRM <br>
+            {{$route}}
         </a>
     </div>
     @php
@@ -29,8 +30,14 @@
             </a>
         </div>
         <ul class="nav">
-            <li class="nav-item active  ">
-                <a class="nav-link" href="#0">
+            <li class="nav-item
+            @if ($route == 'crm')
+                    active
+                    @elseif ($route == 'CrmPage')
+                    active
+            @endif
+                    ">
+                <a class="nav-link" href="/">
                     <i class="fab fa-laravel"></i>
                     <p>Главная</p>
                 </a>
@@ -48,13 +55,21 @@
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item
+            @if ($route == 'Users')
+                    active
+@endif
+                    ">
                 <a class="nav-link" href="{{ route('Users') }}">
                     <i class="fas fa-user-shield"></i>
                     <p>Пользователи</p>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item
+                @if ($route == 'About')
+                    active
+@endif
+                    ">
                 <a class="nav-link" href="{{ route('About') }}">
                     <i class="fas fa-journal-whills"></i>
                     <p>Общая информация</p>

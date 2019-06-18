@@ -8,6 +8,7 @@ use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Image;
 use NikitaKiselev\SendPulse\SendPulse;
@@ -45,6 +46,7 @@ class UserProfile extends Controller
             'user' => $user,
             'pagetitle' => $pagetitle,
             'topics' => false,
+            'route' => Route::getFacadeRoot()->current()->getName()
         ];
         $topics = $user->myMessages()->groupBy('user_from')->get();
         if ($topics) {
@@ -106,6 +108,7 @@ class UserProfile extends Controller
             'messages' => $allMessages,
             'topic' => $topic,
             'from' => $fromUser,
+            'route' => Route::getFacadeRoot()->current()->getName()
         ];
         $out = view('ajax.messages', $data);
 
@@ -158,7 +161,12 @@ class UserProfile extends Controller
     {
         $user = User::where('nick', $nick)->firstOrFail();
         $pagetitle = $user->name;
-        return view('profile.profilePage', compact('user', 'pagetitle'));
+        $data = [
+            'pagetitle' => $pagetitle,
+            'user' => $user,
+            'route' => Route::getFacadeRoot()->current()->getName()
+        ];
+        return view('profile.profilePage', $data);
     }
 
     /**

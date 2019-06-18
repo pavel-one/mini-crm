@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Image;
 use NikitaKiselev\SendPulse\SendPulse;
@@ -27,7 +28,8 @@ class CrmController extends Controller
         return view('crm.list', [
             'pagetitle' => 'Список клиентов',
             'clients' => $list,
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'route' => Route::getFacadeRoot()->current()->getName()
         ]);
     }
 
@@ -177,7 +179,8 @@ class CrmController extends Controller
             'clientPrice' => $clientPrice,
             'allTime' => $allTime,
             'allUsers' => $users,
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'route' => Route::getFacadeRoot()->current()->getName()
         ];
 
         if (count($access)) {

@@ -7,6 +7,7 @@ use App\TaskPayment;
 use Faker\Provider\File;
 use GrahamCampbell\Flysystem\Facades\Flysystem;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use VestaAPI\Facades\Vesta;
 
 class AboutController extends Controller
@@ -30,6 +31,7 @@ class AboutController extends Controller
             'payments' => $payments,
             'Tasks' => $tasks,
             'User' => $currentUser,
+            'route' => Route::getFacadeRoot()->current()->getName()
         ];
         if (!$currentUser->sudo) {
             return response()->redirectTo(route('crm'));
