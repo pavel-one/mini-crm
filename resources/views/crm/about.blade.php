@@ -61,11 +61,66 @@
                                 @endforeach
                             @endif
                             </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-xs-12 col-md-7">
+            <div class="card">
+                <div class="card-header card-header-primary card-header-icon">
+                    <div class="card-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3 class="card-title">
+                        Кто над чем работает
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table payment-table">
+                            <thead class=" text-primary">
+                            <tr>
+                                <th>
+                                    Задача
+                                </th>
+                                <th>
+                                    Общее время
+                                </th>
+                                <th>
+                                    Прошло с запуска
+                                </th>
+                                <th>
+                                    Проект
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @if($Tasks)
+                                @foreach($Tasks as $task)
+                                    @php
+                                        $client = $task->client()->first();
+                                    @endphp
+                                    <tr>
+                                        <td>{!! $task->text !!}</td>
+                                        <td>{{ timeFormat($task->time) }}</td>
+                                        <td>{{ timeFormat($task->time_tmp) }}</td>
+                                        <td>
+                                            <a target="_blank" href="{{ route('CrmPage', $client->id) }}">
+                                                {{$client->name}}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection

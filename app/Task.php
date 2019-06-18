@@ -20,6 +20,6 @@ class Task extends Model
 
     public function client()
     {
-        return $this->belongsTo('App\CrmClient', 'id', 'client_id');
+        return $this->hasOne('App\CrmClient', 'id', 'client_id');
     }
 }
