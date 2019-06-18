@@ -2,7 +2,6 @@
     <div class="logo">
         <a href="{{ url('/') }}" class="simple-text logo-normal">
             SK Groups CRM <br>
-            {{$route}}
         </a>
     </div>
     @php

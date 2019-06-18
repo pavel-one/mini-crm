@@ -56,6 +56,11 @@ class User extends Authenticatable
         return $this->myMessages()->groupBy('user_from');
     }
 
+    public function getChargeable()
+    {
+        return $this->hasMany('App\CrmClient', 'chargeable_user', 'id');
+    }
+
     public function delete()
     {
         $this->tasks()->delete();

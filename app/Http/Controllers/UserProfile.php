@@ -44,12 +44,14 @@ class UserProfile extends Controller
             'user' => $user,
             'pagetitle' => $pagetitle,
             'topics' => false,
+            'clients' => $user->getChargeable()->get(),
             'route' => Route::getFacadeRoot()->current()->getName()
         ];
         $topics = $user->myMessages()->groupBy('user_from')->get();
         if ($topics) {
             $data['topics'] = $topics;
         }
+//        dd($data);
 
         return view('profile.index', $data);
     }

@@ -102,4 +102,38 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Мои клиенты</h4>
+                    <p class="card-category">Клиенты за которых ты ответственен</p>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Кол-во активных задач</th>
+                            <th>Дедлайн</th>
+                            <th>Старт</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if ($clients)
+                            @foreach($clients as $client)
+                                <tr>
+                                    <td><a href="{{ route('CrmPage', $client->id) }}">{{ $client->name }}</a></td>
+                                    <td>{{ $client->tasks()->where('active', 0)->count() }}</td>
+                                    <td>{{ dateFormatNotTime($client->dead) }}</td>
+                                    <td>{{ dateFormatNotTime($client->start) }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
