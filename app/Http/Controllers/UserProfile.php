@@ -135,6 +135,7 @@ class UserProfile extends Controller
             /** @var UploadedFile $file */
             foreach ($files['files'] as $file) {
                 $name = $file->getClientOriginalName();
+                $name = str_replace(' ', '_', $name);
                 $type = $file->getMimeType();
                 $paths[] = [
                     'name' => $name,
@@ -186,6 +187,7 @@ class UserProfile extends Controller
         /** @var \Illuminate\Http\UploadedFile $file */
         $file = $request->allFiles()[0];
         $name = $file->getClientOriginalName();
+        $name = str_replace(' ', '_', $name);
         $path = $file->storeAs(
             'avatars/' . $this->user->id,
             $name,
@@ -216,6 +218,7 @@ class UserProfile extends Controller
             /** @var UploadedFile $file */
             foreach ($files['files'] as $file) {
                 $name = $file->getClientOriginalName();
+                $name = str_replace(' ', '_', $name);
                 $type = $file->getMimeType();
                 $paths[] = [
                     'name' => $name,
@@ -252,6 +255,9 @@ class UserProfile extends Controller
     {
         $name = 'messages/' . $this->user->nick . '/' . $filename;
         $path = diskFilePath('public', $name);
+        if (!file_exists($path)) {
+            return response('Вы не можете открыть этот файл, возможно потому что его отправляли вы');
+        }
         $mime = mime_content_type($path);
         if (strripos($mime, 'image') !== FALSE) {
             $image = Storage::disk('public')->get($name);
