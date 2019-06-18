@@ -27,12 +27,19 @@ class CrmController extends Controller
 
     public function ClientPage(CrmClient $client)
     {
-        $access = $client->access()->get();
-        $payments = $client->payments()->get();
-        $messagess = $client->messagess()->get()->sortByDesc('created_at');
+        $access = $client->access()
+            ->get();
+        $payments = $client->payments()
+            ->get();
+        $messagess = $client->messagess()
+            ->get()
+            ->sortByDesc('created_at');
         $users = User::select('id', 'name')->get();
 
-        $tasks = $client->tasks()->orderBy('active', 'asc')->orderBy('time', 'desc')->get();
+        $tasks = $client->tasks()
+            ->orderBy('active', 'asc')
+            ->orderBy('time', 'desc')
+            ->get();
         $allTime = 0;
         if (count($tasks)) {
             foreach ($tasks as $task) {
@@ -40,7 +47,8 @@ class CrmController extends Controller
             }
         }
 
-        $files = $client->files()->get();
+        $files = $client->files()
+            ->get();
         $fileSizes = 0;
         if (count($files)) {
             foreach ($files as $file) {
@@ -48,7 +56,9 @@ class CrmController extends Controller
             }
         }
 
-        $clientActive = $client->payments()->where('active', 1)->get();
+        $clientActive = $client->payments()
+            ->where('active', 1)
+            ->get();
         $clientPrice = 0;
         if (count($clientActive)) {
             foreach ($clientActive as $item) {
@@ -86,8 +96,6 @@ class CrmController extends Controller
         if (count($messagess)) {
             $params['messagess'] = $messagess;
         }
-
-//        dd($params);
 
         return view('crm.page', $params);
     }
