@@ -78,6 +78,7 @@ Route::post('/profile/photo', 'UserProfile@upload')->name('UploadPhoto');
  * Общая информация
  */
 Route::get('about', 'AboutController@index')->name('About');
+
 /**
  * Управление пользователями
  */
@@ -90,10 +91,3 @@ Route::get('login', ['as' => 'login', function () {
 }]);
 
 Route::post('login', 'Auth\LoginController@login');
-
-//Route::get('test/{file}', 'AboutController@test');
-//Route::get('test', function () {
-//    phpinfo();
-//});
-
-//Route::get('test_chat', 'ClentChatController@test');
