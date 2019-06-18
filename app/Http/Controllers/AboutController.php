@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use App\TaskPayment;
-use Faker\Provider\File;
-use GrahamCampbell\Flysystem\Facades\Flysystem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use VestaAPI\Facades\Vesta;
 
 class AboutController extends Controller
 {

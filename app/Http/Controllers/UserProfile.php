@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\UserMessage;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Image;
-use NikitaKiselev\SendPulse\SendPulse;
 
 class UserProfile extends Controller
 {
