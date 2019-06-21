@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Image;
-use NikitaKiselev\SendPulse\SendPulse;
 
 class CrmController extends Controller
 {
