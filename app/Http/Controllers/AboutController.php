@@ -20,7 +20,10 @@ class AboutController extends Controller
         $payments = TaskPayment::where('active', 0)
             ->orderBy('client_id', 'desc')
             ->get();
-        $tasks = Task::where('time_tmp', '!=', 0)
+        $tasks = Task::where([
+            ['time_tmp', '!=', 0],
+            ['active', '!=', 1]
+        ])
             ->orderBy('client_id', 'desc')
             ->get();
         $out = [

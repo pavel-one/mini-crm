@@ -51,14 +51,8 @@ class UserProfile extends Controller
         if ($topics) {
             $data['topics'] = $topics;
         }
-//        dd($data);
 
         return view('profile.index', $data);
-    }
-
-    public function test()
-    {
-        dd('test');
     }
 
     /**
@@ -160,11 +154,13 @@ class UserProfile extends Controller
     public function profile($nick)
     {
         $user = User::where('nick', $nick)->firstOrFail();
+        $clients = $user->getChargeable()->get();
         $pagetitle = $user->name;
         $data = [
             'pagetitle' => $pagetitle,
             'user' => $user,
-            'route' => Route::getFacadeRoot()->current()->getName()
+            'route' => Route::getFacadeRoot()->current()->getName(),
+            'clients' => $clients
         ];
         return view('profile.profilePage', $data);
     }

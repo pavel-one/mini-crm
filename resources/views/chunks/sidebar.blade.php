@@ -41,18 +41,6 @@
                     <p>Главная</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#0">
-                    <i class="fas fa-tasks"></i>
-                    <p>Мои задачи <b>(3)</b></p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#0">
-                    <i class="fas fa-users"></i>
-                    <p>Мои клиенты <b>(13)</b></p>
-                </a>
-            </li>
 
             <li class="nav-item
             @if ($route == 'Users')

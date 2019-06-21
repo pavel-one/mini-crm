@@ -5,11 +5,32 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header card-header-primary">
-                    <h4 class="card-title">Профиль пользователя {{ $user->nick }}</h4>
-                    <p class="card-category">Тут будут задачи и пр пр</p>
+                    <h4 class="card-title">Клиенты</h4>
+                    <p class="card-category">Клиенты за которыми закреплен {{$user->name}}</p>
                 </div>
                 <div class="card-body">
-
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Кол-во активных задач</th>
+                            <th>Дедлайн</th>
+                            <th>Старт</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if ($clients)
+                            @foreach($clients as $client)
+                                <tr>
+                                    <td><a href="{{ route('CrmPage', $client->id) }}">{{ $client->name }}</a></td>
+                                    <td>{{ $client->tasks()->where('active', 0)->count() }}</td>
+                                    <td>{{ dateFormatNotTime($client->dead) }}</td>
+                                    <td>{{ dateFormatNotTime($client->start) }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
