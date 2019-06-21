@@ -61,6 +61,14 @@
                                 <a href="mailto:{{$user->email}}">{{$user->email}}</a>
                             </div>
                         </div>
+                        @if ($user->chat_id)
+                            <div class="row-data">
+                                <div class="title">Telegram</div>
+                                <div class="val">
+                                    {{$user->chat_id}}
+                                </div>
+                            </div>
+                        @endif
                         <div class="buttons">
                             <div class="btn btn-primary" id="msg_btn" data-url="{{ route('ProfileMessageSend', $user->nick) }}">Написать сообщение</div>
                         </div>

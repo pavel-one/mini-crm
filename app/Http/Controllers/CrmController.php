@@ -205,14 +205,14 @@ class CrmController extends Controller
     public function store(Request $request)
     {
         $client = CrmClient::create($request->all());
-        $dataPush = [
-            'title' => 'У нас новый проект!',
-            'website_id' => 44432,
-            'body' => $client->name,
-            'link' => route('CrmPage', $client->id),
-            'ttl' => 10,
-        ];
-        SendPulse::createPushTask($dataPush);
+
+        $users = User::all();
+        /** @var User $user */
+        foreach ($users as $user) {
+            $link = route('CrmPage', $client->id);
+            $client_name = $client->name;
+            $user->sendTelegram("У нас новый клиент «*{$client_name}*»! Просим всех ознакомиться! \n {$link}");
+        }
         return redirect()->route('CrmPage', $client->id);
     }
 
@@ -332,7 +332,10 @@ class CrmController extends Controller
                 $client->update([
                     'chargeable_user' => $user_id,
                 ]);
+                /** @var User $user */
                 $user = $client->getChargeable()->first();
+                $link = route('CrmPage', $client->id);
+                $user->sendTelegram("Вы стали ответственным за клиента «{$client->name}» \n $link");
                 Mail::send('emails.chargeable',
                     ['client' => $client->toArray(), 'user' => $user->toArray()],
                     function ($m) use ($user) {

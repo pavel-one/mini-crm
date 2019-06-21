@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row users_controller">
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-8">
             <div class="card">
                 <div class="card-header card-header-primary">
                     <h4 class="card-title">
@@ -33,6 +33,9 @@
                                     Админ
                                 </th>
                                 <th>
+                                    Телеграмм
+                                </th>
+                                <th>
                                     Действия
                                 </th>
                             </tr>
@@ -61,6 +64,13 @@
                                     </td>
                                     <td class="user_admin">
                                         @if ($user->sudo)
+                                            <span style="color: green">Да</span>
+                                        @else
+                                            <span style="color: red">Нет</span>
+                                        @endif
+                                    </td>
+                                    <td class="user_phone">
+                                        @if ($user->chat_id)
                                             <span style="color: green">Да</span>
                                         @else
                                             <span style="color: red">Нет</span>

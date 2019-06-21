@@ -30,14 +30,25 @@ class ClientChat extends Model
             if ($first == '@') {
                 $nick = explode(' ', $msg);
                 $nick = str_replace('@', '', $nick[0]);
+                /** @var User $find */
                 $find = User::where('nick', $nick)->first();
 
                 $linkProfile = route('ProfilePage', $nick);
                 $this->message = str_replace("@" . $nick, "<a target='_blank' href='{$linkProfile}'>@{$nick}</a>", $this->message);
 
                 if ($find) {
-                    $this->sendEmail($msg, $find, $this->client()->get()->first());
+                    $client = $this->client()->get()->first();
+                    $this->sendEmail($msg, $find, $client);
+                    $link = route('CrmPage', $client->id);
+                    $find->sendTelegram("Вас упомянули в чате клиента *«{$client->name}»* \n {$link}");
                 }
+            } else {
+                /** @var CrmClient $client */
+                $client = $this->client()->get()->first();
+                /** @var User $user */
+                $user = $client->getChargeable()->first();
+                $link = route('CrmPage', $client->id);
+                $user->sendTelegram("У вас в чате клиента за которого вы ответственны *«{$client->name}»* идет движняк, советую проверить \n {$link}");
             }
         }
         return parent::save($options);

@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'photo', 'phone', 'nick'
+        'name', 'email', 'password', 'photo', 'phone', 'nick', 'chat_id', 'last_notify'
     ];
 
     /**
@@ -81,16 +81,14 @@ class User extends Authenticatable
             $message->files = json_encode($files);
         }
         $message->save();
+        $name = Auth::user()->name;
+        $text = $message->text;
 
-        $dataPush = [
-            'title' => 'Новое сообщение для ' . $this->nick,
-            'website_id' => 44432,
-            'body' => $this->name . ', проверь личные сообщения!',
-            'link' => route('Profile'),
-            'ttl' => 10,
-        ];
+        if ($this->chat_id) {
+            $msg = "*{$name} пишет вам в личные сообщения:* \n \n {$text} \n \n" . route('Profile');
+            $this->sendTelegram($msg);
+        }
 
-        $out = SendPulse::createPushTask($dataPush);
         return $message;
     }
 
@@ -111,5 +109,37 @@ class User extends Authenticatable
             $this->nick = str_replace(' ', '_', $this->nick);
         }
         return parent::save($options);
+    }
+
+    public function sendTelegram($msg)
+    {
+        $step_notify = env('STEP_NOTIFY');
+        $msg = $msg . " \n _На {$step_notify} секунд уведомления заблокированы_";
+        $msg = urlencode($msg);
+        if (!$id = $this->chat_id) {
+            return false;
+        }
+        $token = env('TELEGRAM_TOKEN');
+
+
+        if ($this->last_notify) {
+            $old_time = $this->last_notify;
+            $current_time = time();
+            $step = $current_time - $old_time;
+            if ($step >= $step_notify) {
+                $this->update([
+                    'last_notify' => time()
+                ]);
+                file_get_contents("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$id}&text={$msg}&parse_mode=Markdown");
+            }
+        } else {
+            $this->update([
+                'last_notify' => time()
+            ]);
+            file_get_contents("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$id}&text={$msg}&parse_mode=Markdown");
+        }
+
+
+        return true;
     }
 }

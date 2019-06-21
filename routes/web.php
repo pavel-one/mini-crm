@@ -90,4 +90,8 @@ Route::get('login', ['as' => 'login', function () {
     return view('crm.auth', ['pagetitle' => 'Авторизация']);
 }]);
 
+Route::get('testtg', 'TestController@test');
+Route::post('telega', 'TestController@hook')->name('TgHook');
+//Route::get('telega', 'TestController@test')->name('TgHook');
+
 Route::post('login', 'Auth\LoginController@login');
