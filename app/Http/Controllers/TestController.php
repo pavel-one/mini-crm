@@ -66,8 +66,6 @@ class TestController extends Controller
                 $findUser->update([
                     'chat_id' => $this->chat_id
                 ]);
-//                $msg = 'Все ок, едем дальше';
-//                $this->sendMessage($this->chat_id, $msg);
                 $findUser->sendTelegram('Привет, это тестовое сообщение, если ты его получил, значит уведомления будут приходить исправно!');
                 return false;
                 break;

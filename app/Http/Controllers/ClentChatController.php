@@ -10,8 +10,12 @@ class ClentChatController extends Controller
 {
     public function create(Request $request, CrmClient $client)
     {
-//        dd($request->all());
-        return $client->messagess()->create($request->all());
+        if ($message = $request->message) {
+            $message = linksHandler($message, false);
+            return $client->messagess()->create([
+                'message' => $message
+            ]);
+        }
     }
 
     public function all(Request $request, CrmClient $client)

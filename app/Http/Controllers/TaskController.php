@@ -20,8 +20,7 @@ class TaskController extends Controller
         if (!$text = $request->text) {
             return ['success' => false, 'msg' => 'Нет задачи'];
         }
-        $text = preg_replace('(http://[\w+?\.\w+]+[a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\:\;\'\.\/]+[\.]*[a-zA-Z0-9\/]+)', "<a href='$0' target='_blank'>[ссылка]</a>", $text);
-        $text = preg_replace('(https://[\w+?\.\w+]+[a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\:\;\'\.\/]+[\.]*[a-zA-Z0-9\/]+)', "<a href='$0' target='_blank'>[ссылка]</a>", $text);
+        $text = linksHandler($text);
 
         $request->user()->tasks()->create([
             'text' => $text,
@@ -80,9 +79,7 @@ class TaskController extends Controller
                 return $this->error('Задача удалена');
                 break;
             case 'rename-task':
-                $text = $request->text;
-                $text = preg_replace('(http://[\w+?\.\w+]+[a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\:\;\'\.\/]+[\.]*[a-zA-Z0-9\/]+)', "<a href='$0' target='_blank'>[ссылка]</a>", $text);
-                $text = preg_replace('(https://[\w+?\.\w+]+[a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\:\;\'\.\/]+[\.]*[a-zA-Z0-9\/]+)', "<a href='$0' target='_blank'>[ссылка]</a>", $text);
+                $text = linksHandler($request->text);
                 $task->update([
                     'text' => $text,
                 ]);
