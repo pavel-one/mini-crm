@@ -67,6 +67,16 @@ class User extends Authenticatable
         $this->messages()->delete();
         $this->myMessages()->delete();
 
+        $chargeable = $this->getChargeable()->get();
+        if (count($chargeable)) {
+            /** @var CrmClient $client */
+            foreach ($chargeable as $client) {
+                $client->update([
+                    'chargeable_user' => null
+                ]);
+            }
+        }
+
         return parent::delete();
     }
 
