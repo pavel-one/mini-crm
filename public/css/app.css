@@ -553,3 +553,11 @@ pre.ql-syntax {
 .listing-clients .card.black, .card.black .link a:hover {
     color: #9c27b0;
 }
+
+#alert_form input {
+    width: 100%;
+    transition: .25s;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, .05);
+    padding: 10px 15px;
+}

@@ -66,6 +66,25 @@
                 </div>
             </div>
         </div>
+        <div class="col-xs-12 col-md-5">
+            <div class="card">
+                <div class="card-header card-header-primary card-header-icon">
+                    <div class="card-icon">
+                        <i class="fas fa-exclamation"></i>
+                    </div>
+                    {{--<p class="card-category">Задачи</p>--}}
+                    <h3 class="card-title">
+                        Экстренные оповещения
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('alert') }}" id="alert_form" method="post">
+                        @csrf
+                        <input type="text" name="message" placeholder="Срочно! Всем работать!">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-xs-12 col-md-7">

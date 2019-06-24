@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 
-class TestController extends Controller
+class TelegramController extends Controller
 {
     public $token;
     public $chat_id;
@@ -34,6 +34,18 @@ class TestController extends Controller
             $this->messageHandler();
             return response()->json(['success' => true]);
         }
+    }
+
+    public function alert(Request $request)
+    {
+        if ($msg = $request->message) {
+            $users = User::all();
+            /** @var User $user */
+            foreach ($users as $user) {
+                $user->sendTelegram($msg);
+            }
+        }
+        return response()->redirectTo(route('About'));
     }
 
     public function command()
