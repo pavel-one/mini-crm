@@ -64,4 +64,9 @@ class CrmClient extends Model
     {
         return $this->hasOne('App\User', 'id', 'chargeable_user');
     }
+
+    public function log()
+    {
+        return $this->hasMany('App\UserLog', 'client_id', 'id')->orderBy('created_at', 'DESC');
+    }
 }

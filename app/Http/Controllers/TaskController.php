@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\CrmClient;
+use App\Events\onTaskUpdateEvent;
 use App\Task;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 
 class TaskController extends Controller
 {
@@ -35,8 +38,10 @@ class TaskController extends Controller
         $action = $request->action;
         $time_tmp = $task->time_tmp;
         $time = $task->time;
+        /** @var User $currentUser */
         $currentUser = Auth::user();
 
+        Event::fire(new onTaskUpdateEvent($currentUser, $client, $action, $task));
         switch ($action) {
             case 'start':
                 $task->update([

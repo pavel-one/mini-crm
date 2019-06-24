@@ -139,6 +139,22 @@ function Crm() {
     $(document).on('click', '#set-files-client', _ClientSetFiles);
     $(document).on('change', '#set-files-input', _UploadClientFiles);
 
+    if ($('#client_log').length) {
+        setInterval(function () {
+            let $block = $('#client_log');
+            let url = $block.data('action');
+            let $reloadBlock = $block.find('.table-responsive');
+            $.ajax({
+                url: url,
+                dataType: 'html',
+                success: function (resp) {
+                    $reloadBlock.html(resp);
+                    // $reloadBlock.loader(false);
+                }
+            })
+        }, 1000)
+    }
+
 
     $('.message-popup form').submit(function () {
         let url = $('#msg_btn').data('url');

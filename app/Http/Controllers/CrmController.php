@@ -21,6 +21,10 @@ class CrmController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * Листинг клиентов
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         $list = CrmClient::orderBy('active', 'desc')->get();
@@ -32,6 +36,12 @@ class CrmController extends Controller
         ]);
     }
 
+    /**
+     * Обновление фотографии клиента
+     * @param CrmClient $client
+     * @param Request $request
+     * @return array
+     */
     public function UpdatePhoto(CrmClient $client, Request $request)
     {
         /** @var UploadedFile $photo */
@@ -58,6 +68,11 @@ class CrmController extends Controller
         return $this->success('Успешно загружено');
     }
 
+    /**
+     * @param CrmClient $client
+     * @param Request $request
+     * @return array
+     */
     public function UpdateFiles(CrmClient $client, Request $request)
     {
         $files = $request->allFiles();
@@ -90,6 +105,12 @@ class CrmController extends Controller
         return $this->success('Успешно загружено');
     }
 
+    /**
+     * Скачивание реквизитов клиента
+     * @param CrmClient $client
+     * @param $filename
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     function DownloadFile(CrmClient $client, $filename)
     {
         $files = $client->files;
@@ -105,6 +126,12 @@ class CrmController extends Controller
         return response('Странно, но я не нашел файл с таким именем');
     }
 
+    /**
+     * Удаление реквизитов клиента
+     * @param CrmClient $client
+     * @param $filename
+     * @return array
+     */
     function RemoveFile(CrmClient $client, $filename)
     {
         $files = $client->files;
@@ -125,6 +152,11 @@ class CrmController extends Controller
         return $this->error('Странно, но я не нашел файл с таким именем');
     }
 
+    /**
+     * Страница клиента
+     * @param CrmClient $client
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function ClientPage(CrmClient $client)
     {
         $access = $client->access()
@@ -201,6 +233,10 @@ class CrmController extends Controller
         return view('crm.page', $params);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $client = CrmClient::create($request->all());
@@ -215,6 +251,12 @@ class CrmController extends Controller
         return redirect()->route('CrmPage', $client->id);
     }
 
+    /**
+     * @param CrmClient $client
+     * @param Request $request
+     * @return array
+     * @throws \Exception
+     */
     public function access(CrmClient $client, Request $request)
     {
         if ($request->all) {
@@ -244,6 +286,12 @@ class CrmController extends Controller
         return ['success' => true, 'msg' => 'Успешно'];
     }
 
+    /**
+     * Создание доступов клиента
+     * @param array $data
+     * @param CrmClient $client
+     * @return array
+     */
     public function _accessCreates(array $data, CrmClient $client)
     {
         foreach ($data as $item) {
@@ -274,6 +322,12 @@ class CrmController extends Controller
         ];
     }
 
+    /**
+     * Удаление клиента
+     * @param CrmClient $client
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
     public function remove(CrmClient $client)
     {
         $user = Auth::user();
@@ -286,6 +340,12 @@ class CrmController extends Controller
         return redirect()->route('CrmPage', $client->id);
     }
 
+    /**
+     * Функция обработки действий с клиентом
+     * @param CrmClient $client
+     * @param Request $request
+     * @return array
+     */
     public function actions(CrmClient $client, Request $request)
     {
         $user = Auth::user();
@@ -345,12 +405,35 @@ class CrmController extends Controller
         }
     }
 
+    /**
+     * Функция получения действий пользователей по карточке
+     * @param CrmClient $client
+     * @return array|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getLog(CrmClient $client)
+    {
+        $log = $client->log()->limit(100)->get();
+        if ($log) {
+            return view('api.log_chunk', ['logs' => $log]);
+        }
+        return $this->error('Не найден лог');
+    }
 
+    /**
+     * Ответ ошибки
+     * @param $msg
+     * @return array
+     */
     public function error($msg)
     {
         return ['success' => false, 'msg' => $msg];
     }
 
+    /**
+     * Успешный ответ
+     * @param $msg
+     * @return array
+     */
     public function success($msg)
     {
         return ['success' => true, 'msg' => $msg];

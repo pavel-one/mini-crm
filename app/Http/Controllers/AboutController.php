@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use App\TaskPayment;
+use App\UserLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,15 @@ class AboutController extends Controller
             return response()->redirectTo(route('crm'));
         }
         return view('crm.about', $out);
+    }
+
+    public function getLog()
+    {
+        $logs = UserLog::query()->limit(100)->orderBy('created_at', 'DESC')->get();
+        if ($logs) {
+            return view('api.log_chunk', ['logs' => $logs]);
+        }
+        return $this->error('Не найден лог');
     }
 
     public function error($msg)

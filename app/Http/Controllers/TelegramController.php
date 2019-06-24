@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\onTaskUpdateEvent;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 
 class TelegramController extends Controller
 {
@@ -96,10 +99,6 @@ class TelegramController extends Controller
 
     public function test(Request $r)
     {
-//        $nick = $r->nick;
-        /** @var User $findUser */
-//        $findUser = User::where('nick', 'Kikel_D')->first();
-//        $findUser->sendTelegram($r->msg);
         return time();
     }
 
