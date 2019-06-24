@@ -29,6 +29,7 @@ class CrmClient extends Model
         $this->payments()->delete();
         $this->files()->delete();
         $this->messagess()->delete();
+        $this->log()->delete();
         return parent::delete();
     }
 

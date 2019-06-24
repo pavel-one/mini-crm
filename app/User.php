@@ -60,12 +60,18 @@ class User extends Authenticatable
         return $this->hasMany('App\CrmClient', 'chargeable_user', 'id');
     }
 
+    public function log()
+    {
+        return $this->hasMany('App\UserLog', 'user_id', 'id')->orderBy('created_at', 'DESC')->limit(100);
+    }
+
     public function delete()
     {
         $this->tasks()->delete();
         $this->messagessClients()->delete();
         $this->messages()->delete();
         $this->myMessages()->delete();
+        $this->log()->delete();
 
         $chargeable = $this->getChargeable()->get();
         if (count($chargeable)) {

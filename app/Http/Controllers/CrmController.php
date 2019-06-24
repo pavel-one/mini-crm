@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\CrmClient;
+use App\Events\onCreateClientEvent;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -241,13 +243,8 @@ class CrmController extends Controller
     {
         $client = CrmClient::create($request->all());
 
-        $users = User::all();
-        /** @var User $user */
-        foreach ($users as $user) {
-            $link = route('CrmPage', $client->id);
-            $client_name = $client->name;
-            $user->sendTelegram("У нас новый клиент «*{$client_name}*»! Просим всех ознакомиться! \n {$link}");
-        }
+        $event = new onCreateClientEvent($client, Auth::user());
+        Event::fire($event);
         return redirect()->route('CrmPage', $client->id);
     }
 

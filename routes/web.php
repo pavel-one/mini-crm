@@ -70,6 +70,7 @@ Route::get('/profile/getcount', 'UserProfile@getcount')->name('checkNew');
 Route::get('/profile/messages/{topic_id}', 'UserProfile@getMessages')->name('LoadTopic');
 Route::get('/profile/messages/download/{filename}', 'UserProfile@msgDownloadFile')->name('msgDownload');
 Route::get('/profile/{nick}', 'UserProfile@profile')->name('ProfilePage');
+Route::get('/profile/{nick}/api/getLog', 'UserProfile@getLog')->name('ProfilePageLog');
 
 Route::post('/profile', 'UserProfile@update');
 Route::post('/profile/messages/{topic_id}', 'UserProfile@newMessage')->name('NewMessageLk');

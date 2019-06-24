@@ -165,6 +165,17 @@ class UserProfile extends Controller
         return view('profile.profilePage', $data);
     }
 
+    public function getLog($nick)
+    {
+        /** @var User $user */
+        $user = User::where('nick', $nick)->firstOrFail();
+        $logs = $user->log()->get();
+        if (!$logs) {
+            $this->error('НЕ найдено');
+        }
+        return view('api.log_chunk', ['logs' => $logs]);
+    }
+
     /**
      * Обновление профиля
      * @param Request $request

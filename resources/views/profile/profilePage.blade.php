@@ -77,6 +77,29 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-6" id="client_log" data-action="{{route('ProfilePageLog', $user->nick)}}">
+            <div class="card">
+                <div class="card-header card-header-primary card-header-icon">
+                    <div class="card-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    {{--<p class="card-category">Задачи</p>--}}
+                    <h3 class="card-title">
+                        Лог действий
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <i class="fas fa-dollar-sign"></i> Последние 100 действий
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="message-popup">
         <h2>Написать сообщение</h2>

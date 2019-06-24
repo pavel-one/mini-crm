@@ -18,6 +18,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\onTaskUpdateEvent' => [
             'App\Listeners\onTaskUpdateListener'
         ],
+        'App\Events\onCreateClientEvent' => [
+            'App\Listeners\onCreateClientListener'
+        ],
+        'App\Events\onCreateClientMessageEvent' => [
+            'App\Listeners\onCreateClientMessageListener'
+        ],
     ];
 
     /**
