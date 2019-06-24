@@ -36,27 +36,31 @@ class onTaskUpdateListener
         $action = $event->action;
         $task = $event->task;
         $msg = '';
+        $actionBD = 'Task_'.$action;
 
         switch ($action) {
             case 'start':
                 if (!$task->time_tmp) {
-                    $msg = 'Запустил задачу ' . $task->text;
+                    $msg = "Запустил задачу <b>«{$task->text}»</b>";
                 }
                 break;
             case 'pause':
-                $msg = 'Поставил на паузу задачу ' . $task->text;
+                $msg = "Поставил на паузу задачу <b>«{$task->text}»</b>";
                 break;
             case 'refresh':
-                $msg = 'Обнулил задачу ' . $task->text;
+                $msg = "Обнулил задачу <b>«{$task->text}»</b>";
                 break;
             case 'success':
-                $msg = 'Выполнил задачу ' . $task->text;
+                $msg = "Выполнил задачу <b>«{$task->text}»</b>";
                 break;
             case 'remove':
-                $msg = 'Удалил задачу ' . $task->text;
+                $msg = "Удалил задачу <b>«{$task->text}»</b>";
                 break;
             case 'rename-task':
-                $msg = 'Переименовал задачу ' . $task->text;
+                $msg = "Переименовал задачу <b>«{$task->text}»</b>";
+                break;
+            case 'create':
+                $msg = "Создал задачу <b>«{$task->text}»</b>";
                 break;
             default:
                 $msg = 'Сделал неизвестное действие';
@@ -66,7 +70,8 @@ class onTaskUpdateListener
         if ($msg) {
             $client->log()->create([
                 'user_id' => $user->id,
-                'name' => $msg
+                'name' => $msg,
+                'action' => $actionBD
             ]);
         }
 

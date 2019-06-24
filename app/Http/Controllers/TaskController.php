@@ -23,12 +23,16 @@ class TaskController extends Controller
         if (!$text = $request->text) {
             return ['success' => false, 'msg' => 'Нет задачи'];
         }
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
         $text = linksHandler($text);
 
-        $request->user()->tasks()->create([
+        $task = $request->user()->tasks()->create([
             'text' => $text,
             'client_id' => $client->id
         ]);
+
+        Event::fire(new onTaskUpdateEvent($currentUser, $client, 'create', $task));
 
         return ['success' => true, 'msg' => 'Задача успешно создана'];
     }

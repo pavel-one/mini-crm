@@ -47,8 +47,10 @@ class ClientChat extends Model
                 $client = $this->client()->get()->first();
                 /** @var User $user */
                 $user = $client->getChargeable()->first();
-                $link = route('CrmPage', $client->id);
-                $user->sendTelegram("У вас в чате клиента за которого вы ответственны *«{$client->name}»* идет движняк, советую проверить \n {$link}");
+                if ($user) {
+                    $link = route('CrmPage', $client->id);
+                    $user->sendTelegram("У вас в чате клиента за которого вы ответственны *«{$client->name}»* идет движняк, советую проверить \n {$link}");
+                }
             }
         }
         return parent::save($options);
