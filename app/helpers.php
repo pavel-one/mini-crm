@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 if (!function_exists('formatSize')) {
     function formatSize($bytes)
     {
@@ -71,5 +73,20 @@ if (!function_exists('formatSize')) {
         }
 
         return $text;
+    }
+
+    function formatLog($logs)
+    {
+        $out = [];
+        $weekNames = [
+            '', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
+        ];
+        foreach ($logs as $log) {
+            $date = Carbon::createFromTimeString($log->created_at);
+            $date2 = dateFormatNotTime($log->created_at);
+            $week = $weekNames[$date->dayOfWeekIso] . " <sup>({$date2})</sup>";
+            $out[$week][] = $log;
+        }
+        return $out;
     }
 }

@@ -411,7 +411,7 @@ class CrmController extends Controller
     {
         $log = $client->log()->limit(100)->get();
         if ($log) {
-            return view('api.log_chunk', ['logs' => $log]);
+            return view('api.log_chunk', ['logs' => formatLog($log)]);
         }
         return $this->error('Не найден лог');
     }

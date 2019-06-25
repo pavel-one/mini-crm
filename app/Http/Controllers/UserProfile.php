@@ -173,7 +173,7 @@ class UserProfile extends Controller
         if (!$logs) {
             $this->error('НЕ найдено');
         }
-        return view('api.log_chunk', ['logs' => $logs]);
+        return view('api.log_chunk', ['logs' => formatLog($logs)]);
     }
 
     /**

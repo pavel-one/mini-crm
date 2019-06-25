@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Task;
 use App\TaskPayment;
 use App\UserLog;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -44,7 +45,7 @@ class AboutController extends Controller
     {
         $logs = UserLog::query()->limit(100)->orderBy('created_at', 'DESC')->get();
         if ($logs) {
-            return view('api.log_chunk', ['logs' => $logs]);
+            return view('api.log_chunk', ['logs' => formatLog($logs)]);
         }
         return $this->error('Не найден лог');
     }
