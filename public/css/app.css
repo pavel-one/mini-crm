@@ -561,3 +561,20 @@ pre.ql-syntax {
     border: 1px solid rgba(0, 0, 0, .05);
     padding: 10px 15px;
 }
+
+#client_log table {
+    max-height: 150px;
+    overflow-y: scroll;
+}
+[data-action=Task_start] {
+    border-left: 15px solid blueviolet;
+    /*color: #ffffff;*/
+}
+[data-action=Task_pause] {
+    border-left: 15px solid darkred;
+    /*color: #ffffff;*/
+}
+[data-action=Task_success] {
+    border-left: 15px solid darkgreen;
+    /*color: #ffffff;*/
+}

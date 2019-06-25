@@ -152,7 +152,7 @@ function Crm() {
                     // $reloadBlock.loader(false);
                 }
             })
-        }, 1000)
+        }, 5000)
     }
 
 

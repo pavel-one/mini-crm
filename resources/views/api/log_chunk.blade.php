@@ -23,7 +23,7 @@
                 $user = $inner->user()->first();
                 $client = $inner->client()->first();
             @endphp
-            <tr>
+            <tr data-action="{{ $inner->action }}">
                 <td>
                     {!! $inner->name !!}
                 </td>
