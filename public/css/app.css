@@ -583,10 +583,14 @@ pre.ql-syntax {
     border-left: 15px solid darkgreen;
     /*color: #ffffff;*/
 }
-
+div#client_log .card-body .table-responsive {
+    max-height: 400px;
+    overflow-y: scroll;
+}
 @media (min-width: 576px) {
     .card-columns {
         column-count: 2;
         column-gap: 1.25rem;
+        column-fill: balance;
     }
 }
