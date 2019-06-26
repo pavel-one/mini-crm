@@ -510,10 +510,12 @@ pre.ql-syntax {
 .card-body .card-image {
     width: 100%;
 }
+
 .card-body .card-image img {
     display: block;
     width: 100%;
 }
+
 .listing-clients .card .link {
     font-size: .75em;
     color: #eeeeee;
@@ -566,15 +568,25 @@ pre.ql-syntax {
     max-height: 150px;
     overflow-y: scroll;
 }
+
 [data-action=Task_start] {
     border-left: 15px solid blueviolet;
     /*color: #ffffff;*/
 }
+
 [data-action=Task_pause] {
     border-left: 15px solid darkred;
     /*color: #ffffff;*/
 }
+
 [data-action=Task_success] {
     border-left: 15px solid darkgreen;
     /*color: #ffffff;*/
+}
+
+@media (min-width: 576px) {
+    .card-columns {
+        column-count: 2;
+        column-gap: 1.25rem;
+    }
 }
