@@ -9,6 +9,12 @@
         </h3>
     </div>
     <div class="card-body">
+        <h4>Выполнено <span id="suc">{{$percent['success']}}</span>/<span id="all">{{$percent['all']}}</span></h4>
+        <div class="task-success-percent" data-url="{{ route('ClientPercent', $client->id) }}">
+            <div class="process"></div>
+            <div class="success" style="width: {{$percent['percent']}}%"></div>
+            <div class="text" style="left: {{$percent['percent'] - 1}}%">{{$percent['percent']}}%</div>
+        </div>
         <div class="table-responsive">
             <table class="table task-table">
                 <thead class=" text-primary">

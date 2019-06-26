@@ -1,5 +1,5 @@
 @foreach($logs as $day => $log)
-    <h4><strong>{!! $day !!}</strong></h4>
+    <h4><strong>{!! $day !!}</strong> <sup>{{count($log)}} действий</sup></h4>
     <table class="table">
         <thead class="text-primary">
         <tr>

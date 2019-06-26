@@ -174,6 +174,11 @@ class CrmController extends Controller
             ->orderBy('active', 'asc')
             ->orderBy('time', 'desc')
             ->get();
+
+        $taskAllCount = count($tasks); //100
+        $taskSuccessCount = $client->tasks()->where('active', 1)->count();
+        $percent = round(($taskSuccessCount * 100) / $taskAllCount);
+
         $allTime = 0;
         if (count($tasks)) {
             foreach ($tasks as $task) {
@@ -212,6 +217,11 @@ class CrmController extends Controller
             'clientPrice' => $clientPrice,
             'allTime' => $allTime,
             'allUsers' => $users,
+            'percent' => [
+                'all' => $taskAllCount,
+                'success' => $taskSuccessCount,
+                'percent' => $percent
+            ],
             'user' => Auth::user(),
             'route' => Route::getFacadeRoot()->current()->getName()
         ];
@@ -233,6 +243,28 @@ class CrmController extends Controller
         }
 
         return view('crm.page', $params);
+    }
+
+    /**
+     * @param CrmClient $client
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPercent(CrmClient $client)
+    {
+        $tasks = $client->tasks()
+            ->orderBy('active', 'asc')
+            ->orderBy('time', 'desc')
+            ->get();
+
+        $taskAllCount = count($tasks);
+        $taskSuccessCount = $client->tasks()->where('active', 1)->count();
+        $percent = round(($taskSuccessCount * 100) / $taskAllCount);
+
+        return response()->json([
+            'all' => $taskAllCount,
+            'success' => $taskSuccessCount,
+            'percent' => $percent
+        ]);
     }
 
     /**

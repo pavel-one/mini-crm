@@ -22,6 +22,7 @@ Route::post('/', ['as' => 'crm', 'uses' => 'CrmController@store']);
  * Управление клиентами
  */
 Route::get('/clients/{client}', 'CrmController@ClientPage')->name('CrmPage');
+Route::get('/clients/{client}/api/getPercent', 'CrmController@getPercent')->name('ClientPercent');
 Route::get('/clients/{client}/api/getLog', 'CrmController@getLog')->name('CrmPageLog');
 Route::get('/clients/{client}/filesDownload/{filename}', 'CrmController@DownloadFile')->name('CrmDownloadFile');
 

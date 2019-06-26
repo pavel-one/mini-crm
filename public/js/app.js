@@ -723,6 +723,20 @@ function Crm() {
         let url = $(this).parent().data('url');
         let $tr = $(this).closest('tr');
         let id = $(this).parent().data('task-id');
+        // let $percentBlock = $('.task-success-percent');
+        // let url_update_percent = $percentBlock.data('url');
+        // console.log('test', url_update_percent);
+        // $.ajax({
+        //     url: url_update_percent,
+        //     dataType: 'json',
+        //     success: function (resp) {
+        //         let percent = +resp.percent;
+        //         $percentBlock.find('.success').css('width', percent+'%');
+        //         $percentBlock.find('.text').css('left', (percent-1)+'%');
+        //         $('#suc').text(resp.success);
+        //         $('#all').text(resp.all);
+        //     }
+        // });
         switch (action) {
             case 'start':
                 blockedPage = true;
