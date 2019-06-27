@@ -598,10 +598,10 @@ div#client_log .card-body .table-responsive {
     background: #eeeeee;
     margin-bottom: 15px;
     margin-top: 29px;
-    box-shadow: 0 14px 26px -12px rgba(156,39,176,.42), 0 4px 23px 0 rgba(0,0,0,.12), 0 8px 10px -5px rgba(156,39,176,.2);
+    box-shadow: 0 14px 26px -12px rgba(156, 39, 176, .42), 0 4px 23px 0 rgba(0, 0, 0, .12), 0 8px 10px -5px rgba(156, 39, 176, .2);
 }
 
-.task-success-percent .success {
+.task-success-percent .success, .card_success_container .success {
     position: absolute;
     left: 0;
     top: 0;
@@ -611,13 +611,13 @@ div#client_log .card-body .table-responsive {
     transition: 1s;
 }
 
-.task-success-percent .text {
+.task-success-percent .text, .card_success_container .text {
     position: absolute;
     top: -27px;
     font-weight: 500;
 }
 
-.task-success-percent .text:before {
+.task-success-percent .text:before, .card_success_container .text:before {
     content: '';
     position: absolute;
     width: 18px;
@@ -626,6 +626,16 @@ div#client_log .card-body .table-responsive {
     height: 2px;
     background: #9c27b0;
     transform: rotate(90deg);
+}
+
+.card_success_container {
+    height: 10px;
+    width: 100%;
+    position: relative;
+    background: #eeeeee;
+}
+.card_success_container .success {
+    border-radius: 0;
 }
 
 @media (min-width: 576px) {

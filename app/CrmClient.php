@@ -70,4 +70,16 @@ class CrmClient extends Model
     {
         return $this->hasMany('App\UserLog', 'client_id', 'id')->orderBy('created_at', 'DESC');
     }
+
+    /**
+     * Показывает % завершения задачи
+     * @return array
+     */
+    public function getPercent()
+    {
+        $all = $this->tasks()->count();
+        $success = $this->tasks()->where('active', 1)->count();
+        $percent = round(($success * 100) / $all);
+        return ['all' => $all, 'success' => $success, 'percent' => $percent];
+    }
 }

@@ -15,6 +15,9 @@
 
         @if (count($clients) > 0)
             @foreach($clients as $client)
+                @php
+                    $percent = $client->getPercent();
+                @endphp
                 <div class="col-xs-12 col-md-3 listing-clients">
                     <div class="card">
                         @if ($client->photo)
@@ -41,6 +44,13 @@
                             <a href="{{ route('CrmPage', $client->id) }}" class="btn btn-primary">Подробнее</a>
                             {{--                            <a href="{{ route('CrmPage', $client->id) }}" class="btn btn-secondary">В проект</a>--}}
                         </div>
+                        @if ($percent['percent'])
+                            <div class="card_success_container">
+                                <div class="success" style="width: {{$percent['percent']}}%"></div>
+                                <div class="text" style="left: {{$percent['percent'] - 2}}%">{{$percent['percent']}}%</div>
+                            </div>
+                        @endif
+
                     </div>
                 </div>
             @endforeach
