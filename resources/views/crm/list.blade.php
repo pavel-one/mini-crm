@@ -46,8 +46,14 @@
                         </div>
                         @if ($percent['percent'])
                             <div class="card_success_container">
-                                <div class="success" style="width: {{$percent['percent']}}%"></div>
-                                <div class="text" style="left: {{$percent['percent'] - 2}}%">{{$percent['percent']}}%</div>
+                                @if ($percent['percent'] != 100)
+                                    <div class="success" style="width: {{$percent['percent']}}%"></div>
+                                    <div class="text" style="left: {{$percent['percent'] - 2}}%">{{$percent['percent']}}
+                                        %
+                                    </div>
+                                @else
+                                    <div class="success" style="width: 100%; background: #4caf50"></div>
+                                @endif
                             </div>
                         @endif
 
