@@ -20,6 +20,9 @@
                         Размер
                     </th>
                     <th>
+                        Дата загрузки
+                    </th>
+                    <th>
                         Действия
                     </th>
                 </tr>
@@ -30,6 +33,7 @@
                         <tr class="">
                             <td>{{ $item->name }}</td>
                             <td>{{ formatSize($item->size) }}</td>
+                            <td>{{ dateFormat($item->created_at) }}</td>
                             <td class="task-actions"
                                 data-url="{{ route('UploadUpdate', $item->id) }}">
                                 <div class="icon" data-action="file-rename" title="Переименовать">

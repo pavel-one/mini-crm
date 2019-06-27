@@ -145,7 +145,7 @@
                 </div>
             </div>
         </div>
-        <div class="card" id="client_log" data-action="{{route('AboutPageLog', $client->id)}}">
+        <div class="card" id="client_log" data-action="{{route('AboutPageLog')}}">
             <div class="card-header card-header-primary card-header-icon">
                 <div class="card-icon">
                     <i class="fas fa-history"></i>
