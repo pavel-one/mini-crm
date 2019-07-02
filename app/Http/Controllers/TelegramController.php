@@ -99,7 +99,7 @@ class TelegramController extends Controller
 
     public function test(Request $r)
     {
-        return time();
+        phpinfo();
     }
 
 }

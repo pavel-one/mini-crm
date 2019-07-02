@@ -79,7 +79,11 @@ class CrmClient extends Model
     {
         $all = $this->tasks()->count();
         $success = $this->tasks()->where('active', 1)->count();
-        $percent = round(($success * 100) / $all);
+        if ($all) {
+            $percent = round(($success * 100) / $all);
+        } else {
+            $percent = 0;
+        }
         return ['all' => $all, 'success' => $success, 'percent' => $percent];
     }
 }

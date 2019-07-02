@@ -1,7 +1,7 @@
 RewriteEngine on
 
-RewriteCond %{SERVER_PORT} !^443
-RewriteRule (.*) https://admin.project.skgroups.ru/$1 [R=301,L]
+#RewriteCond %{SERVER_PORT} !^443
+#RewriteRule (.*) https://admin.project.skgroups.ru/$1 [R=301,L]
 
 RewriteCond %{HTTP_HOST} ^admin.project.skgroups.ru$ [NC,OR]
 RewriteCond %{HTTP_HOST} ^admin.project.skgroups.ru$
