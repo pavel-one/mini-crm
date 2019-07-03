@@ -69,8 +69,18 @@
                                 </div>
                             </div>
                         @endif
+                        @if ($user->vk_id)
+                            <div class="row-data">
+                                <div class="title">ВКонтакте</div>
+                                <div class="val">
+                                    <a href="https://vk.com/id{{$user->vk_id}}" target="_blank">{{$user->vk_id}}</a>
+                                </div>
+                            </div>
+                        @endif
                         <div class="buttons">
-                            <div class="btn btn-primary" id="msg_btn" data-url="{{ route('ProfileMessageSend', $user->nick) }}">Написать сообщение</div>
+                            <div class="btn btn-primary" id="msg_btn"
+                                 data-url="{{ route('ProfileMessageSend', $user->nick) }}">Написать сообщение
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -97,7 +97,8 @@ Route::get('login', ['as' => 'login', function () {
 
 Route::post('alert', 'TelegramController@alert')->name('alert');
 Route::post('telega', 'TelegramController@hook')->name('TgHook');
+Route::post('vk', 'VkController@hook')->name('VkHook');
 //Route::get('telega', 'TestController@test')->name('TgHook');
-Route::get('test', 'TelegramController@test');
+//Route::get('test', 'TelegramController@test');
 
 Route::post('login', 'Auth\LoginController@login');
