@@ -10,5 +10,7 @@
 <link rel="stylesheet" href="css/fancybox.css">
 <script src="js/fancybox.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js" integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY=" crossorigin="anonymous"></script>
+
 <link rel="stylesheet" href="css/app.css">
 <script src="js/app.js"></script>

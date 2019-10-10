@@ -100,6 +100,18 @@ function Crm() {
     let self = this;
 
     $(document).on('click', '.cart-create', _cartCreateClick);
+    $(document).on('click', '#create-server-btn', function () {
+        $('#create-server').modal('show');
+    });
+    $(document).on('click', '#add_field_generator', function () {
+        const $block = $(this).parent().find('.json-generator');
+        $block.append(`
+            <tr>
+                <td><input type="text" name="names[]" class="table-input" placeholder="Название доступа"></td>
+                <td><input type="text" name="values[]" class="table-input" placeholder="Значение"></td>
+            </tr>
+        `);
+    });
 
     $(document).on('mouseover', '[data-name]', _appendEditButton);
     $(document).on('mouseout', '[data-name]', _removeEditButton);
@@ -1077,3 +1089,5 @@ function Crm() {
 $(document).ready(function () {
     new Crm();
 });
+
+

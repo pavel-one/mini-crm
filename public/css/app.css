@@ -637,7 +637,9 @@ div#client_log .card-body .table-responsive {
 .card_success_container .success {
     border-radius: 0;
 }
-
+table.json-generator td {
+    padding: 10px;
+}
 @media (min-width: 576px) {
     .card-columns {
         column-count: 2;

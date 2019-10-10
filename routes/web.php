@@ -82,7 +82,12 @@ Route::post('/profile/photo', 'UserProfile@upload')->name('UploadPhoto');
  */
 Route::get('about', 'AboutController@index')->name('About');
 Route::get('about/api/getLog', 'AboutController@getLog')->name('AboutPageLog');
-
+/*
+ * Сервера
+ */
+Route::get('servers', 'ServerController@index')->name('Servers');
+//Route::post('servers/{id}', 'ServerController@destroy')->name('ServerRemove');
+Route::post('servers/create', 'ServerController@create')->name('ServerCreate');
 /**
  * Управление пользователями
  */

@@ -53,6 +53,16 @@
                 </a>
             </li>
             <li class="nav-item
+                @if ($route == 'Servers')
+                active
+@endif
+                ">
+                <a class="nav-link" href="{{ route('Servers') }}">
+                    <i class="fas fa-server"></i>
+                    <p>Сервера</p>
+                </a>
+            </li>
+            <li class="nav-item
                 @if ($route == 'About')
                     active
 @endif
