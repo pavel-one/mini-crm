@@ -37,7 +37,7 @@ function diskFilePath($disk, $filename)
     return config('filesystems.disks.' . $disk . '.root') . '/' . $filename;
 }
 
-function getUserPhoto($id = false)
+function getUserPhoto($id = false): string
 {
     if ($id) {
         $user = \App\User::find($id);

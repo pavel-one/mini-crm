@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:8.2-fpm
 
 # Аргументы принимающие из docker-compose.yml
 ARG user

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CrmClient;
-use App\taskFile;
+use App\TaskFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,7 +33,7 @@ class TaskFilesController extends Controller
         return $this->success('Успешно загружено');
     }
 
-    public function update(Request $request, taskFile $upload)
+    public function update(Request $request, TaskFile $upload)
     {
         $action = $request->action;
         switch ($action) {
@@ -42,7 +42,7 @@ class TaskFilesController extends Controller
                 $newName = str_replace(' ', '_', $newName);
 
                 $client_id = $upload->client_id;
-                $count_name = taskFile::where('client_id', $client_id)
+                $count_name = TaskFile::where('client_id', $client_id)
                     ->where('name', $newName)
                     ->count();
                 if ($count_name) {
@@ -67,7 +67,7 @@ class TaskFilesController extends Controller
         if (!$name = $request->name) {
             return redirect()->route('CrmPage', $client_id);
         }
-        /** @var taskFile $file */
+        /** @var TaskFile $file */
         $file = $client
             ->files()
             ->where('client_id', $client_id)

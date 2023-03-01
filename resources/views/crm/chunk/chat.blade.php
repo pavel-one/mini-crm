@@ -57,6 +57,8 @@
     </div>
 
     <div class="card-footer">
-        <i class="fas fa-dumbbell"></i> Количество сообщений: {{ count($messagess) }}.
+        @if($messagess)
+            <i class="fas fa-dumbbell"></i> Количество сообщений: {{ count($messagess) }}.
+        @endif
     </div>
 </div>

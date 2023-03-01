@@ -32,7 +32,7 @@ class TaskController extends Controller
             'client_id' => $client->id
         ]);
 
-        Event::fire(new onTaskUpdateEvent($currentUser, $client, 'create', $task));
+        Event::dispatch(new onTaskUpdateEvent($currentUser, $client, 'create', $task));
 
         return ['success' => true, 'msg' => 'Задача успешно создана'];
     }
@@ -45,7 +45,7 @@ class TaskController extends Controller
         /** @var User $currentUser */
         $currentUser = Auth::user();
 
-        Event::fire(new onTaskUpdateEvent($currentUser, $client, $action, $task));
+        Event::dispatch(new onTaskUpdateEvent($currentUser, $client, $action, $task));
         switch ($action) {
             case 'start':
                 $task->update([

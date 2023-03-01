@@ -255,7 +255,7 @@ class CrmController extends Controller
         $client = CrmClient::create($request->all());
 
         $event = new onCreateClientEvent($client, Auth::user());
-        Event::fire($event);
+        Event::dispatch($event);
         return redirect()->route('CrmPage', $client->id);
     }
 

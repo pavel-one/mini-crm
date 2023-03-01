@@ -47,7 +47,7 @@ class UserProfile extends Controller
             'clients' => $user->getChargeable()->get(),
             'route' => Route::getFacadeRoot()->current()->getName()
         ];
-        $topics = $user->myMessages()->groupBy('user_from')->get();
+        $topics = $user->myMessages()->get();
         if ($topics) {
             $data['topics'] = $topics;
         }

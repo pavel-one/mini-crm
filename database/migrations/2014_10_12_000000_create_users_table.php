@@ -28,7 +28,6 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-        User::create(['name' => 'Pavel Zarubin', 'email' => 'pavel@orendat.ru', 'password' => bcrypt('tipira21')]);
     }
 
     /**
