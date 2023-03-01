@@ -6,6 +6,10 @@
 но пусть будет тут для истории.  
 Да, я его обновил до последней версии laravel
 
+
+https://user-images.githubusercontent.com/31564567/222020819-b1befa31-55ea-4518-b2db-1353c7e36884.mp4
+
+
 ## Как запустить
 1. `cp .env.example .env`  
 2. Измени `DOCKER_UID` и `DOCKER_USER` в .env на свои
